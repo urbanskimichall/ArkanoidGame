@@ -1,3 +1,4 @@
+#include <iostream>
 #include "BallMovement.h"
 
 void BallMovement::fillUpSectorsValues(Platform &platform)
@@ -13,30 +14,56 @@ void BallMovement::fillUpSectorsValues(Platform &platform)
 std::pair<float,float> BallMovement::changePositionOfBall(Platform &platform, float currentXposition, float currentYposition)
 {
     fillUpSectorsValues(platform);
-    checkCeilingTouch(currentYposition,platform);
-    if(isDirectionUp)
+    checkCeilingTouch(currentXposition,currentYposition,platform);
+    if(isDirectionUp && !isRightWallTouched)
     {
         currentXposition+=directionsOfBall[14];
         currentYposition-=0.1;
     }
-    else
+    else if(isDirectionUp && isRightWallTouched)
+    {
+        currentXposition+=directionsOfBall[6];
+        currentYposition-=0.1;
+    }
+    else if(!isDirectionUp && isRightWallTouched)
+    {
+        currentXposition+=directionsOfBall[6];
+        currentYposition+=0.1;
+        std::cout<<"Jestem w trzecim ifie"<<std::endl;
+    }
+    else if(isDirectionUp && !isLeftWallTouched )
+    {
+        currentXposition+=directionsOfBall[6];
+        currentYposition+=0.1;
+    }
+    else if(!isDirectionUp)
     {
         currentXposition-=directionsOfBall[6];
         currentYposition+=0.1;
+        std::cout<<"Jestem w czwartym ifie"<<std::endl;
     }
+
 
 
     return std::pair<float,float>(currentXposition,currentYposition);
 }
 
-void BallMovement::checkCeilingTouch(float yOfBall,Platform &platform) {
+void BallMovement::checkCeilingTouch(float xOfBall, float yOfBall, Platform &platform) //do zmiany
+{
     if(yOfBall<0)
     {
         isDirectionUp = false;
     }
-    if(!isDirectionUp && yOfBall>platform.getYOfPlatform()-platform.getSizeYOfPlatform())
+    else if(!isDirectionUp && yOfBall>platform.getYOfPlatform()-platform.getSizeYOfPlatform())
     {
-        isDirectionUp=true;
-
+        isDirectionUp = true;
+    }
+    if(xOfBall>800)
+    {
+        isRightWallTouched = true;
+    }
+    if(xOfBall<0)
+    {
+        isLeftWallTouched = true;
     }
 }

@@ -7,9 +7,10 @@
 
 class BallMovement {
 private:
-    void checkCeilingTouch(float yOfBall, Platform &platform);
+    void checkCeilingTouch(float xOfBall, float yOfBall, Platform &platform);
 
-    bool isLeftWallTouched{true};
+    bool isLeftWallTouched{false};
+    bool isRightWallTouched{false};
     bool isDirectionUp{true};
     float xOfBall{0};
     float yOfBall{0};
