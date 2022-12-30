@@ -14,6 +14,7 @@ public:
     float getYOfPlatform();
     float getXOfPlatform();
     float getSizeXOfPlatform();
+    float getSizeYOfPlatform();
 private:
     bool checkMousePosition(int xMousePosition);
 
@@ -26,6 +27,7 @@ private:
     float thicknessOfPlatform{4};
     float xSizeOfWindow{0};
     float sizeXofPlatform{100};
+    float sizeYofPlatform{20};
 
 
 

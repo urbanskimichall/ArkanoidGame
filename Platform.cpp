@@ -44,3 +44,8 @@ float Platform::getSizeXOfPlatform()
 {
     return sizeXofPlatform;
 }
+
+float Platform::getSizeYOfPlatform()
+{
+    return sizeYofPlatform;
+}
