@@ -1,6 +1,11 @@
 #include <iostream>
 #include "BallMovement.h"
 
+BallMovement::BallMovement(float radiusOfBall)
+{
+    this->radiusOfBall = radiusOfBall;
+}
+
 void BallMovement::fillUpSectorsValues(Platform &platform)
 {
     float sizeOfSector{0.f};
@@ -12,57 +17,93 @@ void BallMovement::fillUpSectorsValues(Platform &platform)
 }
 
 std::pair<float, float>
-BallMovement::changePositionOfBall(Platform &platform, float currentXposition, float currentYposition)
+BallMovement::changePositionOfBall(Platform &platform, float currentXposition, float currentYposition,
+                                   int xSizeOfWindow, int ySizeOfWindow)
 {
     fillUpSectorsValues(platform);
-    checkCeilingTouch(currentXposition, currentYposition, platform);
+    checkCeilingTouch(currentXposition, currentYposition);
+    checkPlatformTouch(currentXposition, currentYposition, platform, ySizeOfWindow);
+    checkLeftWallTouch(currentXposition, currentYposition);
+    checkRightWallTouch(currentXposition, currentYposition, xSizeOfWindow);
 
-    if (isDirectionUp && !isRightWallTouched)
-    {
-        currentXposition += directionsOfBall[14];
-        currentYposition -= 0.1;
-    }
-    else if (isDirectionUp && isRightWallTouched)
-    {
-        currentXposition += directionsOfBall[6];
-        currentYposition -= 0.1;
-    }
-    else if (!isDirectionUp && isRightWallTouched)
-    {
-        currentXposition += directionsOfBall[6];
-        currentYposition += 0.1;
-        std::cout << "Jestem w trzecim ifie" << std::endl;
-    }
-    else if (isDirectionUp && !isLeftWallTouched)
-    {
-        currentXposition += directionsOfBall[6];
-        currentYposition += 0.1;
-    }
-    else if (!isDirectionUp)
-    {
-        currentXposition -= directionsOfBall[6];
-        currentYposition += 0.1;
-        std::cout << "Jestem w czwartym ifie" << std::endl;
-    }
-    return std::pair<float, float>(currentXposition, currentYposition);
+    return updateBallPosition(currentXposition, currentYposition);
 }
 
-void BallMovement::checkCeilingTouch(float xOfBall, float yOfBall, Platform &platform) //do zmiany
+void BallMovement::checkCeilingTouch(float xOfBall, float yOfBall)
 {
-    if (yOfBall < 0)
+    if (yOfBall < 0 && ballDirections == BallDirections::UP_LEFT)
     {
-        isDirectionUp = false;
+        ballDirections = BallDirections::DOWN_LEFT;
     }
-    else if (!isDirectionUp && yOfBall > platform.getYOfPlatform() - platform.getSizeYOfPlatform())
+    else if (yOfBall < 0 && ballDirections == BallDirections::UP_RIGHT)
     {
-        isDirectionUp = true;
+        ballDirections = BallDirections::DOWN_RIGHT;
     }
-    if (xOfBall > 800)
+}
+
+void
+BallMovement::checkPlatformTouch(float xOfBall, float yOfBall, Platform &platform, int ySizeOfWindow)
+{
+    if (yOfBall > ySizeOfWindow - 4 * platform.getSizeYOfPlatform() && ballDirections == BallDirections::DOWN_LEFT)
     {
-        isRightWallTouched = true;
+        ballDirections = BallDirections::UP_LEFT;
     }
-    if (xOfBall < 0)
+    else if (yOfBall > ySizeOfWindow - 4 * platform.getSizeYOfPlatform() &&
+             ballDirections == BallDirections::DOWN_RIGHT)
     {
-        isLeftWallTouched = true;
+        ballDirections = BallDirections::UP_RIGHT;
     }
+}
+
+void BallMovement::checkLeftWallTouch(float xOfBall, float yOfBall)
+{
+    if (xOfBall < 0 && ballDirections == BallDirections::UP_LEFT)
+    {
+        ballDirections = BallDirections::UP_RIGHT;
+    }
+    else if (xOfBall < 0 && ballDirections == BallDirections::DOWN_LEFT)
+    {
+        ballDirections = BallDirections::DOWN_RIGHT;
+    }
+
+}
+
+void BallMovement::checkRightWallTouch(float xOfBall, float yOfBall, int xSizeOfWindow)
+{
+    if (xOfBall > xSizeOfWindow - 2 * radiusOfBall && ballDirections == BallDirections::UP_RIGHT)
+    {
+        ballDirections = BallDirections::UP_LEFT;
+    }
+    else if (xOfBall > xSizeOfWindow - 2 * radiusOfBall && ballDirections == BallDirections::DOWN_RIGHT)
+    {
+        ballDirections = BallDirections::DOWN_LEFT;
+    }
+
+}
+
+std::pair<float, float> BallMovement::updateBallPosition(float currentXposition, float currentYposition)
+{
+    switch (ballDirections)
+    {
+    case BallDirections::UP_RIGHT:
+        currentXposition += 0.05;
+        currentYposition -= 0.1;
+        break;
+    case BallDirections::UP_LEFT:
+        currentXposition -= 0.05;
+        currentYposition -= 0.1;
+        break;
+    case BallDirections::DOWN_RIGHT:
+        currentXposition += 0.05;
+        currentYposition += 0.1;
+        break;
+    case BallDirections::DOWN_LEFT:
+        currentXposition -= 0.05;
+        currentYposition += 0.1;
+        break;
+    case BallDirections::INVALID:
+        std::cout << "Invalid ball direction!" << std::endl;
+        break;
+    }
+    return std::pair<float, float>(currentXposition, currentYposition);
 }

@@ -1,0 +1,13 @@
+#ifndef ARKANOID_BALLDIRECTIONS_H
+#define ARKANOID_BALLDIRECTIONS_H
+
+enum class BallDirections
+{
+    INVALID,
+    UP_RIGHT,
+    UP_LEFT,
+    DOWN_RIGHT,
+    DOWN_LEFT
+};
+
+#endif //ARKANOID_BALLDIRECTIONS_H

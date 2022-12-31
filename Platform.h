@@ -6,7 +6,7 @@
 class Platform
 {
 public:
-    Platform(float xSizeOfWindow);
+    Platform(float xSizeOfWindow, float ySizeOfWindow);
 
     sf::RectangleShape getPlatform();
 
@@ -27,10 +27,11 @@ private:
     sf::Vector2f sizeOfPlatform{100, 20};
     sf::Color colorOfPlatform{100, 200, 50};
     sf::Color colorOfOutline{200, 20, 110};
-    float xOfPlatform{350};
-    float yOfPlatform{550};
     float thicknessOfPlatform{4};
     float xSizeOfWindow{0};
+    float ySizeOfWindow{0};
+    float xOfPlatform{350};
+    float yOfPlatform{ySizeOfWindow - 50};
     float sizeXofPlatform{100};
     float sizeYofPlatform{20};
 };

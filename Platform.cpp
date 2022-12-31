@@ -1,8 +1,10 @@
 #include "Platform.h"
 
-Platform::Platform(float xSizeOfWindow)
+Platform::Platform(float xSizeOfWindow, float ySizeOfWindow)
 {
     this->xSizeOfWindow = xSizeOfWindow;
+    this->ySizeOfWindow = ySizeOfWindow;
+    yOfPlatform = ySizeOfWindow - 50;
     platform.setPosition(xOfPlatform, yOfPlatform);
     platform.setSize(sizeOfPlatform);
     platform.setFillColor(colorOfPlatform);

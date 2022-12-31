@@ -11,24 +11,13 @@ class Ball
 public:
     Ball();
 
-    void setBallPosition(Platform &platform);
+    void setBallPosition(Platform &platform, int xSizeOfWindow, int ySizeOfWindow);
 
     sf::CircleShape getBall();
-
 
     bool isBallReleased{false};
 
 private:
-    void checkDirections(Platform &platform);
-
-    void updateBallPosition(Platform &platform);
-
-    void setBallPositionDependOnPlatform(Platform &platform);
-
-    void fillUpSectorsValues(Platform &platform);
-
-    int calculateSectorOfPickup();
-
     sf::CircleShape ball;
     sf::Color colorOfBall{20, 40, 200};
     sf::Color outlineColorOfBall{20, 240, 140};
@@ -36,8 +25,7 @@ private:
     float thickness{2.f};
     float currentXballPosition{0.f};
     float currentYballPosition{0.f};
-    BallMovement ballMovement;
-
+    BallMovement ballMovement{radius};
 };
 
 #endif //ARKANOID_BALL_H
