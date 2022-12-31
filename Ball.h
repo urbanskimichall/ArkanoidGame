@@ -1,7 +1,6 @@
 #ifndef ARKANOID_BALL_H
 #define ARKANOID_BALL_H
 
-
 #include <SFML/Graphics/CircleShape.hpp>
 #include "Platform.h"
 #include <vector>
@@ -20,7 +19,7 @@ public:
     bool isBallReleased{false};
 
 private:
-     void checkDirections(Platform &platform);
+    void checkDirections(Platform &platform);
 
     void updateBallPosition(Platform &platform);
 
@@ -40,6 +39,5 @@ private:
     BallMovement ballMovement;
 
 };
-
 
 #endif //ARKANOID_BALL_H

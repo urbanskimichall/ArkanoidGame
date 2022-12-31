@@ -11,7 +11,7 @@ Ball::Ball()
 
 void Ball::setBallPosition(Platform &platform)
 {
-    std::pair<float,float>ballCords;
+    std::pair<float, float> ballCords;
     if (isBallReleased == false)
     {
         currentXballPosition = platform.getXOfPlatform() + 4 * radius;
@@ -20,7 +20,7 @@ void Ball::setBallPosition(Platform &platform)
     }
     else
     {
-        ballCords=ballMovement.changePositionOfBall(platform,currentXballPosition,currentYballPosition);
+        ballCords = ballMovement.changePositionOfBall(platform, currentXballPosition, currentYballPosition);
         //setBallPositionDependOnPlatform(platform);
         currentXballPosition = ballCords.first;
         currentYballPosition = ballCords.second;

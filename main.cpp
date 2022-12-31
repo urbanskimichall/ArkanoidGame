@@ -19,12 +19,13 @@ int main()
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
+            {
                 window.close();
+            }
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
             {
-                ball.isBallReleased=true;
+                ball.isBallReleased = true;
             }
-
         }
         sf::Vector2i currentMousePosition = sf::Mouse::getPosition(window);
         platform.setPlatformPosition(currentMousePosition.x);
