@@ -25,6 +25,7 @@ BallMovement::changePositionOfBall(Platform &platform, float currentXposition, f
     checkPlatformTouch(currentXposition, currentYposition, platform, ySizeOfWindow);
     checkLeftWallTouch(currentXposition, currentYposition);
     checkRightWallTouch(currentXposition, currentYposition, xSizeOfWindow);
+    gameOver.checkIfBallUnderPlatform(currentYposition, platform.getYOfPlatform());
 
     return updateBallPosition(currentXposition, currentYposition);
 }
@@ -41,15 +42,14 @@ void BallMovement::checkCeilingTouch(float xOfBall, float yOfBall)
     }
 }
 
-void
-BallMovement::checkPlatformTouch(float xOfBall, float yOfBall, Platform &platform, int ySizeOfWindow)
+void BallMovement::checkPlatformTouch(float xOfBall, float yOfBall, Platform &platform, int ySizeOfWindow)
 {
-    if (yOfBall > ySizeOfWindow - 4 * platform.getSizeYOfPlatform() && ballDirections == BallDirections::DOWN_LEFT)
+    if (ballDirections == BallDirections::DOWN_LEFT && checkBallOnPlatform(xOfBall, yOfBall, platform, ySizeOfWindow))
     {
         ballDirections = BallDirections::UP_LEFT;
     }
-    else if (yOfBall > ySizeOfWindow - 4 * platform.getSizeYOfPlatform() &&
-             ballDirections == BallDirections::DOWN_RIGHT)
+    else if (ballDirections == BallDirections::DOWN_RIGHT &&
+             checkBallOnPlatform(xOfBall, yOfBall, platform, ySizeOfWindow))
     {
         ballDirections = BallDirections::UP_RIGHT;
     }
@@ -106,4 +106,10 @@ std::pair<float, float> BallMovement::updateBallPosition(float currentXposition,
         break;
     }
     return std::pair<float, float>(currentXposition, currentYposition);
+}
+
+bool BallMovement::checkBallOnPlatform(float xOfBall, float yOfBall, Platform &platform, int ySizeOfWindow)
+{
+    return yOfBall > ySizeOfWindow - 4 * platform.getSizeYOfPlatform() &&
+           xOfBall > platform.getXOfPlatform() && xOfBall < platform.getXOfPlatform() + platform.getSizeXOfPlatform();
 }

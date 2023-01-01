@@ -4,6 +4,7 @@
 #include <vector>
 #include "Platform.h"
 #include "BallDirections.h"
+#include "GameOver.h"
 
 class BallMovement
 {
@@ -25,6 +26,8 @@ private:
 
     void checkRightWallTouch(float xOfBall, float yOfBall, int xSizeOfWindow);
 
+    bool checkBallOnPlatform(float xOfBall, float yOfBall, Platform &platform, int ySizeOfWindow);
+
     std::pair<float, float> updateBallPosition(float currentXPosition, float currentYPosition);
 
     float radiusOfBall{0};
@@ -34,6 +37,7 @@ private:
                                         0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1};
     std::vector<float> sectorsOfPlatform{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     BallDirections ballDirections{BallDirections::UP_RIGHT};
+    GameOver gameOver;
 
 };
 
