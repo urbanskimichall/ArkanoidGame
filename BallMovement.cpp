@@ -20,6 +20,7 @@ std::pair<float, float>
 BallMovement::changePositionOfBall(Platform &platform, float currentXposition, float currentYposition,
                                    int xSizeOfWindow, int ySizeOfWindow)
 {
+    prewiousState = ballDirections;
     fillUpSectorsValues(platform);
     checkCeilingTouch(currentXposition, currentYposition);
     checkPlatformTouch(currentXposition, currentYposition, platform, ySizeOfWindow);
@@ -44,14 +45,20 @@ void BallMovement::checkCeilingTouch(float xOfBall, float yOfBall)
 
 void BallMovement::checkPlatformTouch(float xOfBall, float yOfBall, Platform &platform, int ySizeOfWindow)
 {
-    if (ballDirections == BallDirections::DOWN_LEFT && checkBallOnPlatform(xOfBall, yOfBall, platform, ySizeOfWindow))
+    if (checkBallOnPlatform(xOfBall, yOfBall, platform, ySizeOfWindow))
     {
-        ballDirections = BallDirections::UP_LEFT;
-    }
-    else if (ballDirections == BallDirections::DOWN_RIGHT &&
-             checkBallOnPlatform(xOfBall, yOfBall, platform, ySizeOfWindow))
-    {
-        ballDirections = BallDirections::UP_RIGHT;
+        calculatePartOfPlatformWhereBallWasBounced(xOfBall, platform);
+        if (ballDirections == BallDirections::DOWN_LEFT || ballDirections == BallDirections::DOWN_RIGHT)
+        {
+            if (indexOfSector <= 9)
+            {
+                ballDirections = BallDirections::UP_LEFT;
+            }
+            else
+            {
+                ballDirections = BallDirections::UP_RIGHT;
+            }
+        }
     }
 }
 
@@ -83,22 +90,23 @@ void BallMovement::checkRightWallTouch(float xOfBall, float yOfBall, int xSizeOf
 
 std::pair<float, float> BallMovement::updateBallPosition(float currentXposition, float currentYposition)
 {
+
     switch (ballDirections)
     {
     case BallDirections::UP_RIGHT:
-        currentXposition += 0.05;
+        currentXposition += ballBounceCoefficient;
         currentYposition -= 0.1;
         break;
     case BallDirections::UP_LEFT:
-        currentXposition -= 0.05;
+        currentXposition -= ballBounceCoefficient;
         currentYposition -= 0.1;
         break;
     case BallDirections::DOWN_RIGHT:
-        currentXposition += 0.05;
+        currentXposition += ballBounceCoefficient;
         currentYposition += 0.1;
         break;
     case BallDirections::DOWN_LEFT:
-        currentXposition -= 0.05;
+        currentXposition -= ballBounceCoefficient;
         currentYposition += 0.1;
         break;
     case BallDirections::INVALID:
@@ -111,5 +119,45 @@ std::pair<float, float> BallMovement::updateBallPosition(float currentXposition,
 bool BallMovement::checkBallOnPlatform(float xOfBall, float yOfBall, Platform &platform, int ySizeOfWindow)
 {
     return yOfBall > ySizeOfWindow - 4 * platform.getSizeYOfPlatform() &&
-           xOfBall > platform.getXOfPlatform() && xOfBall < platform.getXOfPlatform() + platform.getSizeXOfPlatform();
+           xOfBall + 2 * radiusOfBall > platform.getXOfPlatform() &&
+           xOfBall < platform.getXOfPlatform() + platform.getSizeXOfPlatform();
+}
+
+void BallMovement::calculatePartOfPlatformWhereBallWasBounced(float xOfBall, Platform &platform)
+{
+    float distanceBetweenBallAndBeginOfPlatform{xOfBall - platform.getXOfPlatform()};
+    float indeXOfSector{(distanceBetweenBallAndBeginOfPlatform / (platform.getSizeXOfPlatform() / numberOfSectors))};
+    indexOfSector = static_cast<int> (indeXOfSector);
+    if (indexOfSector < 0)
+    {
+        indexOfSector = 0;
+    }
+    else if (indexOfSector >= 20)
+    {
+        indexOfSector = 19;
+    }
+    ballBounceCoefficient = directionsOfBall[indexOfSector];
+
+//    std::cout << "index " << indexOfSector << " prewiousState: " << printBallDirection(prewiousState) << "actualState: "
+//              << printBallDirection(ballDirections) << std::endl;
+
+}
+
+std::string BallMovement::printBallDirection(BallDirections ballDirections)
+{
+    switch (ballDirections)
+    {
+    case BallDirections::INVALID:
+        return "BallDirections::INVALID";
+    case BallDirections::UP_LEFT:
+        return "BallDirections::UP_LEFT";
+    case BallDirections::UP_RIGHT:
+        return "BallDirections::UP_RIGHT";
+    case BallDirections::DOWN_LEFT:
+        return "BallDirections::DOWN_LEFT";
+    case BallDirections::DOWN_RIGHT:
+        return "BallDirections::DOWN_RIGHT";
+
+    }
+    return "nothing";
 }

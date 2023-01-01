@@ -3,7 +3,6 @@
 
 class GameOver
 {
-
 public:
     void checkIfBallUnderPlatform(float currentYPosition, float yOfPlatform);
 };

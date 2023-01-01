@@ -3,8 +3,8 @@
 
 void GameOver::checkIfBallUnderPlatform(float currentYPosition, float yOfPlatform)
 {
-if(currentYPosition>yOfPlatform)
-{
-    std::cout<<"GameOver"<<std::endl;
-}
+    if (currentYPosition > yOfPlatform)
+    {
+        std::cout << "GameOver" << std::endl;
+    }
 }

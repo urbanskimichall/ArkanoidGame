@@ -30,13 +30,20 @@ private:
 
     std::pair<float, float> updateBallPosition(float currentXPosition, float currentYPosition);
 
+    void calculatePartOfPlatformWhereBallWasBounced(float xOfBall, Platform &platform);
+
+    std::string printBallDirection(BallDirections ballDirections);
+
+
     float radiusOfBall{0};
     const float numberOfSectors{20};
     int indexOfSector{0};
-    std::vector<float> directionsOfBall{-0.1, -0.09, -0.08, -0.07, -0.06, -0.05, -0.04, -0.03, -0.02, -0.01, 0.0, 0.01,
-                                        0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1};
+    float ballBounceCoefficient{0.05f};
+    std::vector<float> directionsOfBall{0.2, 0.17, 0.15, 0.12, 0.1, 0.07, 0.05, 0.03, 0.02, 0.0, 0.02, 0.03,
+                                        0.05, 0.07, 0.1, 0.12, 0.15, 0.17, 0.19, 0.2};
     std::vector<float> sectorsOfPlatform{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     BallDirections ballDirections{BallDirections::UP_RIGHT};
+    BallDirections prewiousState{BallDirections::UP_RIGHT};
     GameOver gameOver;
 
 };
