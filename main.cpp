@@ -1,7 +1,10 @@
 #include <SFML/Window.hpp>
 #include "Platform.h"
 #include "Ball.h"
+#include "Blocks.h"
 #include <SFML/Graphics.hpp>
+#include <thread>
+#include <synchapi.h>
 
 int main()
 {
@@ -11,6 +14,9 @@ int main()
 
     Platform platform(xSizeOfWindow, ySizeOfWindow);
     Ball ball;
+
+    Blocks blocks(xSizeOfWindow, ySizeOfWindow);
+    blocks.setRowsOfBlocks();
 
     while (window.isOpen())
     {
@@ -30,8 +36,15 @@ int main()
         platform.setPlatformPosition(currentMousePosition.x);
         ball.setBallPosition(platform, xSizeOfWindow, ySizeOfWindow);
         window.clear();
+        Sleep(1);
         window.draw(platform.getPlatform());
         window.draw(ball.getBall());
+
+        for (const auto &rectangle: blocks.getBlock())
+        {
+            window.draw(rectangle);
+        }
+
         window.display();
     }
 

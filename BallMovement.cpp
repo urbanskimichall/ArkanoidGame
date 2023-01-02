@@ -94,20 +94,20 @@ std::pair<float, float> BallMovement::updateBallPosition(float currentXposition,
     switch (ballDirections)
     {
     case BallDirections::UP_RIGHT:
-        currentXposition += ballBounceCoefficient;
-        currentYposition -= 0.1;
+        currentXposition += ballBounceCoefficient*50;
+        currentYposition -= 0.1*50;
         break;
     case BallDirections::UP_LEFT:
-        currentXposition -= ballBounceCoefficient;
-        currentYposition -= 0.1;
+        currentXposition -= ballBounceCoefficient*50;
+        currentYposition -= 0.1*50;
         break;
     case BallDirections::DOWN_RIGHT:
-        currentXposition += ballBounceCoefficient;
-        currentYposition += 0.1;
+        currentXposition += ballBounceCoefficient*50;
+        currentYposition += 0.1*50;
         break;
     case BallDirections::DOWN_LEFT:
-        currentXposition -= ballBounceCoefficient;
-        currentYposition += 0.1;
+        currentXposition -= ballBounceCoefficient*50;
+        currentYposition += 0.1*50;
         break;
     case BallDirections::INVALID:
         std::cout << "Invalid ball direction!" << std::endl;
