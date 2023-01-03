@@ -9,13 +9,15 @@
 class Ball
 {
 public:
-    Ball();
+    Ball(std::vector<sf::RectangleShape> &rectangles);
 
     void setBallPosition(Platform &platform, int xSizeOfWindow, int ySizeOfWindow);
 
     sf::CircleShape getBall();
 
     bool isBallReleased{false};
+
+    std::vector<sf::RectangleShape> &getLeftBlocks();
 
 private:
     sf::CircleShape ball;
@@ -26,6 +28,7 @@ private:
     float currentXballPosition{0.f};
     float currentYballPosition{0.f};
     BallMovement ballMovement{radius};
+    std::vector<sf::RectangleShape> rectangles;
 };
 
 #endif //ARKANOID_BALL_H

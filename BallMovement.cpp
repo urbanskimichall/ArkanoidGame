@@ -18,10 +18,11 @@ void BallMovement::fillUpSectorsValues(Platform &platform)
 
 std::pair<float, float>
 BallMovement::changePositionOfBall(Platform &platform, float currentXposition, float currentYposition,
-                                   int xSizeOfWindow, int ySizeOfWindow)
+                                   int xSizeOfWindow, int ySizeOfWindow, std::vector<sf::RectangleShape> &rectangles)
 {
     prewiousState = ballDirections;
     fillUpSectorsValues(platform);
+    checkBlockTouch(rectangles, currentXposition, currentYposition);
     checkCeilingTouch(currentXposition, currentYposition);
     checkPlatformTouch(currentXposition, currentYposition, platform, ySizeOfWindow);
     checkLeftWallTouch(currentXposition, currentYposition);
@@ -94,20 +95,20 @@ std::pair<float, float> BallMovement::updateBallPosition(float currentXposition,
     switch (ballDirections)
     {
     case BallDirections::UP_RIGHT:
-        currentXposition += ballBounceCoefficient*50;
-        currentYposition -= 0.1*50;
+        currentXposition += ballBounceCoefficient * 50;
+        currentYposition -= 0.1 * 50;
         break;
     case BallDirections::UP_LEFT:
-        currentXposition -= ballBounceCoefficient*50;
-        currentYposition -= 0.1*50;
+        currentXposition -= ballBounceCoefficient * 50;
+        currentYposition -= 0.1 * 50;
         break;
     case BallDirections::DOWN_RIGHT:
-        currentXposition += ballBounceCoefficient*50;
-        currentYposition += 0.1*50;
+        currentXposition += ballBounceCoefficient * 50;
+        currentYposition += 0.1 * 50;
         break;
     case BallDirections::DOWN_LEFT:
-        currentXposition -= ballBounceCoefficient*50;
-        currentYposition += 0.1*50;
+        currentXposition -= ballBounceCoefficient * 50;
+        currentYposition += 0.1 * 50;
         break;
     case BallDirections::INVALID:
         std::cout << "Invalid ball direction!" << std::endl;
@@ -160,4 +161,103 @@ std::string BallMovement::printBallDirection(BallDirections ballDirections)
 
     }
     return "nothing";
+}
+
+void BallMovement::checkBlockTouch(std::vector<sf::RectangleShape> &rectangles, float currentXposition,
+                                   float currentYposition)
+{
+    for (int indexOfRectangle = 0; indexOfRectangle < rectangles.size(); indexOfRectangle++)
+    {
+        if (checkIfBottomSideBlockTouched(rectangles, currentXposition, currentYposition, indexOfRectangle))
+        {
+            if (ballDirections == BallDirections::UP_RIGHT)
+            {
+                ballDirections = BallDirections::DOWN_RIGHT;
+            }
+            else if (ballDirections == BallDirections::UP_LEFT)
+            {
+                ballDirections = BallDirections::DOWN_LEFT;
+            }
+            rectangles.erase(rectangles.begin() + indexOfRectangle);
+            //std::cout<<"index: "<<indexOfRectangle<<std::endl;
+            break;
+        }
+        else if (checkIfLeftSideBlockTouched(rectangles, currentXposition, currentYposition, indexOfRectangle))
+        {
+            if (ballDirections == BallDirections::UP_RIGHT)
+            {
+                ballDirections = BallDirections::UP_LEFT;
+            }
+            else if (ballDirections == BallDirections::DOWN_RIGHT)
+            {
+                ballDirections = BallDirections::DOWN_LEFT;
+            }
+            rectangles.erase(rectangles.begin() + indexOfRectangle);
+            //std::cout<<"index: "<<indexOfRectangle<<std::endl;
+            break;
+        }
+        else if (checkIfRightSideBlockTouched(rectangles, currentXposition, currentYposition, indexOfRectangle))
+        {
+            if (ballDirections == BallDirections::UP_LEFT)
+            {
+                ballDirections = BallDirections::UP_RIGHT;
+            }
+            else if (ballDirections == BallDirections::DOWN_LEFT)
+            {
+                ballDirections = BallDirections::DOWN_RIGHT;
+            }
+            rectangles.erase(rectangles.begin() + indexOfRectangle);
+            //std::cout<<"index: "<<indexOfRectangle<<std::endl;
+            break;
+        }
+        else if (checkIfTopSideBlockTouched(rectangles, currentXposition, currentYposition, indexOfRectangle))
+        {
+            if (ballDirections == BallDirections::DOWN_RIGHT)
+            {
+                ballDirections = BallDirections::UP_RIGHT;
+            }
+            else if (ballDirections == BallDirections::DOWN_LEFT)
+            {
+                ballDirections = BallDirections::UP_LEFT;
+            }
+            rectangles.erase(rectangles.begin() + indexOfRectangle);
+            break;
+        }
+    }
+}
+
+bool BallMovement::checkIfBottomSideBlockTouched(std::vector<sf::RectangleShape> &rectangles, float currentXposition,
+                                                 float currentYposition, int indexOfRectangle)
+{
+    return (currentXposition > rectangles[indexOfRectangle].getPosition().x &&
+            currentXposition < rectangles[indexOfRectangle].getPosition().x + 50 &&
+            currentYposition > rectangles[indexOfRectangle].getPosition().y + 20 &&
+            currentYposition < rectangles[indexOfRectangle].getPosition().y + 30);
+}
+
+bool BallMovement::checkIfTopSideBlockTouched(std::vector<sf::RectangleShape> &rectangles, float currentXposition,
+                                              float currentYposition, int indexOfRectangle)
+{
+    return (currentXposition > rectangles[indexOfRectangle].getPosition().x &&
+            currentXposition < rectangles[indexOfRectangle].getPosition().x + 50 &&
+            currentYposition > rectangles[indexOfRectangle].getPosition().y &&
+            currentYposition < rectangles[indexOfRectangle].getPosition().y + 30);
+}
+
+bool BallMovement::checkIfLeftSideBlockTouched(std::vector<sf::RectangleShape> &rectangles, float currentXposition,
+                                               float currentYposition, int indexOfRectangle)
+{
+    return (currentXposition > rectangles[indexOfRectangle].getPosition().x &&
+            currentXposition < rectangles[indexOfRectangle].getPosition().x + 30 &&
+            currentYposition > rectangles[indexOfRectangle].getPosition().y &&
+            currentYposition < rectangles[indexOfRectangle].getPosition().y + 20);
+}
+
+bool BallMovement::checkIfRightSideBlockTouched(std::vector<sf::RectangleShape> &rectangles, float currentXposition,
+                                                float currentYposition, int indexOfRectangle)
+{
+    return (currentXposition > rectangles[indexOfRectangle].getPosition().x + 50 &&
+            currentXposition < rectangles[indexOfRectangle].getPosition().x + 50 + 30 &&
+            currentYposition > rectangles[indexOfRectangle].getPosition().y &&
+            currentYposition < rectangles[indexOfRectangle].getPosition().y + 20);
 }

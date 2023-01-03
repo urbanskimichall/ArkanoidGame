@@ -1,8 +1,9 @@
 #include <iostream>
 #include "Ball.h"
 
-Ball::Ball()
+Ball::Ball(std::vector<sf::RectangleShape> &rectangles)
 {
+    this->rectangles = rectangles;
     ball.setRadius(radius);
     ball.setFillColor(colorOfBall);
     ball.setOutlineColor(outlineColorOfBall);
@@ -21,7 +22,8 @@ void Ball::setBallPosition(Platform &platform, int xSizeOfWindow, int ySizeOfWin
     else
     {
         ballCords = ballMovement.changePositionOfBall(platform, currentXballPosition, currentYballPosition,
-                                                      xSizeOfWindow, ySizeOfWindow);
+                                                      xSizeOfWindow, ySizeOfWindow, rectangles);
+        std::cout << "size : " << rectangles.size() << std::endl;
         currentXballPosition = ballCords.first;
         currentYballPosition = ballCords.second;
         ball.setPosition(ballCords.first, ballCords.second);
@@ -31,4 +33,9 @@ void Ball::setBallPosition(Platform &platform, int xSizeOfWindow, int ySizeOfWin
 sf::CircleShape Ball::getBall()
 {
     return ball;
+}
+
+std::vector<sf::RectangleShape> &Ball::getLeftBlocks()
+{
+    return rectangles;
 }

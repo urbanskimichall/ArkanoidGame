@@ -12,11 +12,11 @@ int main()
     const int ySizeOfWindow{720};
     sf::RenderWindow window(sf::VideoMode(xSizeOfWindow, ySizeOfWindow), "Arkanoid");
 
-    Platform platform(xSizeOfWindow, ySizeOfWindow);
-    Ball ball;
-
     Blocks blocks(xSizeOfWindow, ySizeOfWindow);
     blocks.setRowsOfBlocks();
+
+    Platform platform(xSizeOfWindow, ySizeOfWindow);
+    Ball ball(blocks.getBlock());
 
     while (window.isOpen())
     {
@@ -40,7 +40,7 @@ int main()
         window.draw(platform.getPlatform());
         window.draw(ball.getBall());
 
-        for (const auto &rectangle: blocks.getBlock())
+        for (const auto &rectangle: ball.getLeftBlocks())
         {
             window.draw(rectangle);
         }

@@ -1,16 +1,19 @@
 #ifndef ARKANOID_BLOCKS_H
 #define ARKANOID_BLOCKS_H
+
 #include <SFML/Graphics.hpp>
+
 class Blocks
 {
 public:
-    Blocks(int xWidnowSize,int yWindowSize);
+    Blocks(int xWindowSize, int yWindowSize);
 
     void setSingleRowOfBlocks(int blocksRowShift);
 
-    std::vector<sf::RectangleShape> & getBlock();
+    std::vector<sf::RectangleShape> &getBlock();
 
     void setRowsOfBlocks();
+
 private:
     std::vector<sf::RectangleShape> rectangles;
     sf::RectangleShape block;
@@ -20,7 +23,6 @@ private:
     int yWindowSize{0};
     float xBlockSize{50};
     float yBlockSize{20};
-
 
 };
 
