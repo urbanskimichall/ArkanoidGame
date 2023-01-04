@@ -23,6 +23,7 @@ void Platform::setPlatformPosition(int xMousePosition)
     {
         xOfPlatform = xMousePosition - sizeOfPlatform.x / 2;
         platform.setPosition(xOfPlatform, yOfPlatform);
+        shootingBonus.setGunsPosition(xOfPlatform, yOfPlatform, sizeXofPlatform);
     }
 }
 
@@ -50,4 +51,10 @@ float Platform::getSizeXOfPlatform()
 float Platform::getSizeYOfPlatform()
 {
     return sizeYofPlatform;
+}
+
+void Platform::drawPlatform(sf::RenderWindow &window)
+{
+    window.draw(platform);
+    shootingBonus.drawGuns(window);
 }

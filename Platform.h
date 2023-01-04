@@ -2,6 +2,8 @@
 #define ARKANOID_PLATFORM_H
 
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include "ShootingBonus.h"
 
 class Platform
 {
@@ -20,6 +22,8 @@ public:
 
     float getSizeYOfPlatform();
 
+    void drawPlatform(sf::RenderWindow &window);
+
 private:
     bool checkMousePosition(int xMousePosition);
 
@@ -34,6 +38,8 @@ private:
     float yOfPlatform{ySizeOfWindow - 50};
     float sizeXofPlatform{100};
     float sizeYofPlatform{20};
+
+    ShootingBonus shootingBonus;
 };
 
 #endif //ARKANOID_PLATFORM_H

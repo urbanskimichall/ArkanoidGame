@@ -37,7 +37,7 @@ int main()
         ball.setBallPosition(platform, xSizeOfWindow, ySizeOfWindow);
         window.clear();
         Sleep(1);
-        window.draw(platform.getPlatform());
+        platform.drawPlatform(window);
         window.draw(ball.getBall());
 
         for (const auto &rectangle: ball.getLeftBlocks())
