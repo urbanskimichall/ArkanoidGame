@@ -11,13 +11,15 @@ class Ball
 public:
     Ball(std::vector<sf::RectangleShape> &rectangles);
 
-    void setBallPosition(Platform &platform, int xSizeOfWindow, int ySizeOfWindow);
+    void setBallPosition(Platform &platform, int xSizeOfWindow, int ySizeOfWindow,std::vector<sf::RectangleShape> &rectangles);
 
     sf::CircleShape getBall();
 
     bool isBallReleased{false};
 
     std::vector<sf::RectangleShape> &getLeftBlocks();
+
+    void setRectangles(std::vector<sf::RectangleShape> & rect);
 
 private:
     sf::CircleShape ball;

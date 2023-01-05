@@ -36,3 +36,8 @@ void Blocks::setRowsOfBlocks()
     }
 }
 
+void Blocks::setRectangles(std::vector<sf::RectangleShape> &rect)
+{
+    rectangles=rect;
+}
+

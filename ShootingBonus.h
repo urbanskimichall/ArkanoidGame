@@ -12,14 +12,16 @@ public:
 
     void setGunsPosition(float xPositionOfPlatform, float yPositionOfPlatform, float xSizeOfPlatform);
 
+    std::vector<std::tuple<sf::RectangleShape, sf::RectangleShape, float,float>> & getBullets();
+
 private:
 
     sf::RectangleShape leftGun;
     sf::RectangleShape rightGun;
-    const float gunSize{10};
+    float gunSize{10};
     sf::RectangleShape rightBullet;
     sf::RectangleShape leftBullet;
-    const float bulletSize{6};
+    float bulletSize{6};
     float xRightBulletPosition{0};
     float xLeftBulletPosition{0};
     float yBulletPosition{0};

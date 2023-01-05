@@ -8,6 +8,7 @@
 class Platform
 {
 public:
+    Platform(){}
     Platform(float xSizeOfWindow, float ySizeOfWindow);
 
     sf::RectangleShape getPlatform();
@@ -24,11 +25,15 @@ public:
 
     void drawPlatform(sf::RenderWindow &window);
 
+    std::vector<std::tuple<sf::RectangleShape, sf::RectangleShape, float,float>> & getBullets();
+
 private:
     bool checkMousePosition(int xMousePosition);
 
+    float sizeXofPlatform{100};
+    float sizeYofPlatform{20};
     sf::RectangleShape platform;
-    sf::Vector2f sizeOfPlatform{100, 20};
+    sf::Vector2f sizeOfPlatform{sizeXofPlatform, sizeYofPlatform};
     sf::Color colorOfPlatform{100, 200, 50};
     sf::Color colorOfOutline{200, 20, 110};
     float thicknessOfPlatform{4};
@@ -36,8 +41,7 @@ private:
     float ySizeOfWindow{0};
     float xOfPlatform{350};
     float yOfPlatform{ySizeOfWindow - 50};
-    float sizeXofPlatform{100};
-    float sizeYofPlatform{20};
+
 
     ShootingBonus shootingBonus;
 };

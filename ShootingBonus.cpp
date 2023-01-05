@@ -22,7 +22,7 @@ void ShootingBonus::setGunsPosition(float xPositionOfPlatform, float yPositionOf
     rightGun.setFillColor({180, 0, 255});
 
     counter++;
-    std::cout << counter << std::endl;
+   // std::cout << counter << std::endl;
 
     if (!isBulletFired && counter % 15 == 0)
     {
@@ -56,4 +56,9 @@ void ShootingBonus::setGunsPosition(float xPositionOfPlatform, float yPositionOf
         }
     }
 
+}
+
+std::vector<std::tuple<sf::RectangleShape, sf::RectangleShape, float, float>> & ShootingBonus::getBullets()
+{
+    return bullets;
 }
