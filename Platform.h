@@ -8,7 +8,9 @@
 class Platform
 {
 public:
-    Platform(){}
+    Platform()
+    {}
+
     Platform(float xSizeOfWindow, float ySizeOfWindow);
 
     sf::RectangleShape getPlatform();
@@ -25,7 +27,7 @@ public:
 
     void drawPlatform(sf::RenderWindow &window);
 
-    std::vector<std::tuple<sf::RectangleShape, sf::RectangleShape, float,float>> & getBullets();
+    std::vector<std::tuple<sf::RectangleShape, float, float>> &getBullets();
 
 private:
     bool checkMousePosition(int xMousePosition);

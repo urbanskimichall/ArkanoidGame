@@ -59,7 +59,7 @@ void Platform::drawPlatform(sf::RenderWindow &window)
     shootingBonus.drawGuns(window);
 }
 
-std::vector<std::tuple<sf::RectangleShape, sf::RectangleShape, float, float>> & Platform::getBullets()
+std::vector<std::tuple<sf::RectangleShape, float, float>> &Platform::getBullets()
 {
     return shootingBonus.getBullets();
 }

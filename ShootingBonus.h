@@ -12,7 +12,7 @@ public:
 
     void setGunsPosition(float xPositionOfPlatform, float yPositionOfPlatform, float xSizeOfPlatform);
 
-    std::vector<std::tuple<sf::RectangleShape, sf::RectangleShape, float,float>> & getBullets();
+    std::vector<std::tuple<sf::RectangleShape, float, float>> &getBullets();
 
 private:
 
@@ -26,8 +26,9 @@ private:
     float xLeftBulletPosition{0};
     float yBulletPosition{0};
     bool isBulletFired{false};
-    std::vector<std::tuple<sf::RectangleShape, sf::RectangleShape, float,float>> bullets;
+    std::vector<std::tuple<sf::RectangleShape, float, float>> bullets;
     int counter{0};
+    int bulletSpeed{60};
 };
 
 #endif //ARKANOID_SHOOTINGBONUS_H

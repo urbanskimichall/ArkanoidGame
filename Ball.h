@@ -11,7 +11,8 @@ class Ball
 public:
     Ball(std::vector<sf::RectangleShape> &rectangles);
 
-    void setBallPosition(Platform &platform, int xSizeOfWindow, int ySizeOfWindow,std::vector<sf::RectangleShape> &rectangles);
+    void setBallPosition(Platform &platform, int xSizeOfWindow, int ySizeOfWindow,
+                         std::vector<sf::RectangleShape> &rectangles);
 
     sf::CircleShape getBall();
 
@@ -19,7 +20,7 @@ public:
 
     std::vector<sf::RectangleShape> &getLeftBlocks();
 
-    void setRectangles(std::vector<sf::RectangleShape> & rect);
+    void setRectangles(std::vector<sf::RectangleShape> &rect);
 
 private:
     sf::CircleShape ball;

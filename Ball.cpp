@@ -10,7 +10,8 @@ Ball::Ball(std::vector<sf::RectangleShape> &rectangles)
     ball.setOutlineThickness(thickness);
 }
 
-void Ball::setBallPosition(Platform &platform, int xSizeOfWindow, int ySizeOfWindow,std::vector<sf::RectangleShape> &rectangles1)
+void Ball::setBallPosition(Platform &platform, int xSizeOfWindow, int ySizeOfWindow,
+                           std::vector<sf::RectangleShape> &rectangles1)
 {
     std::pair<float, float> ballCords;
     if (!isBallReleased)
@@ -40,7 +41,7 @@ std::vector<sf::RectangleShape> &Ball::getLeftBlocks()
     return rectangles;
 }
 
-void Ball::setRectangles(std::vector<sf::RectangleShape> & rect)
+void Ball::setRectangles(std::vector<sf::RectangleShape> &rect)
 {
-    rectangles=rect;
+    rectangles = rect;
 }

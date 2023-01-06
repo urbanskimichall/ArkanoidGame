@@ -20,7 +20,7 @@ int main()
     Ball ball(blocks.getBlock());
     Ball ball2(blocks.getBlock());
 
-    std::vector<sf::RectangleShape> rectangles=blocks.getBlock();
+    std::vector<sf::RectangleShape> rectangles = blocks.getBlock();
 
     int clickCounter{0};
     while (window.isOpen())
@@ -36,7 +36,7 @@ int main()
             {
                 ball.isBallReleased = true;
                 clickCounter++;
-                if(clickCounter>2)
+                if (clickCounter > 2)
                 {
                     ball2.isBallReleased = true;
                 }
@@ -45,11 +45,11 @@ int main()
         }
         sf::Vector2i currentMousePosition = sf::Mouse::getPosition(window);
         platform.setPlatformPosition(currentMousePosition.x);
-        ball.setBallPosition(platform, xSizeOfWindow, ySizeOfWindow,rectangles);
-        ball2.setBallPosition(platform, xSizeOfWindow, ySizeOfWindow,rectangles);
-//        BlockDestroyer blockDestroyer(platform,blocks);
-//        auto rectangles=blockDestroyer.removeBlockAfterShoot();
-//        ball.setRectangles(rectangles);
+        ball.setBallPosition(platform, xSizeOfWindow, ySizeOfWindow, rectangles);
+        ball2.setBallPosition(platform, xSizeOfWindow, ySizeOfWindow, rectangles);
+        BlockDestroyer blockDestroyer(platform, blocks);
+        blockDestroyer.removeBlockAfterShoot(rectangles, platform.getBullets());
+        ball.setRectangles(rectangles);
         window.clear();
         Sleep(1);
         platform.drawPlatform(window);
