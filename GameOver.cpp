@@ -5,6 +5,6 @@ void GameOver::checkIfBallUnderPlatform(float currentYPosition, float yOfPlatfor
 {
     if (currentYPosition > yOfPlatform)
     {
-        std::cout << "GameOver" << std::endl;
+       // std::cout << "GameOver" << std::endl;
     }
 }

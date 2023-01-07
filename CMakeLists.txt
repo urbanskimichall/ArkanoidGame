@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 project(Arkanoid)
 
 set(CMAKE_CXX_STANDARD 17)
-add_executable(Arkanoid main.cpp Platform.cpp Platform.h Ball.cpp Ball.h BallMovement.cpp BallMovement.h BallDirections.h GameOver.cpp GameOver.h Blocks.cpp Blocks.h ShootingBonus.cpp ShootingBonus.h BlockDestroyer.cpp BlockDestroyer.h)
+add_executable(Arkanoid main.cpp Platform.cpp Platform.h Ball.cpp Ball.h BallMovement.cpp BallMovement.h BallDirections.h GameOver.cpp GameOver.h Blocks.cpp Blocks.h ShootingBonus.cpp ShootingBonus.h BlockDestroyer.cpp BlockDestroyer.h Bonus.h BonusManager.cpp BonusManager.h)
 include_directories(C:/SFML/include)
 
 set(SFML_STATIC_LIBRARIES TRUE)

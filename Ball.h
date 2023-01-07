@@ -9,7 +9,8 @@
 class Ball
 {
 public:
-    Ball(std::vector<sf::RectangleShape> &rectangles);
+    Ball(std::vector<sf::RectangleShape> &rectangles, BallDirections ballDirections);
+
 
     void setBallPosition(Platform &platform, int xSizeOfWindow, int ySizeOfWindow,
                          std::vector<sf::RectangleShape> &rectangles);
@@ -22,6 +23,18 @@ public:
 
     void setRectangles(std::vector<sf::RectangleShape> &rect);
 
+    void drawBonus(sf::RenderWindow &window);
+
+    bool isDoubleBallActive();
+
+    void setBallReleased(bool b);
+
+    bool getIsBonusDropped();
+
+    std::pair<float,float>getXYofBall();
+
+    void setIsBonusDropped(bool b);
+
 private:
     sf::CircleShape ball;
     sf::Color colorOfBall{20, 40, 200};
@@ -30,8 +43,11 @@ private:
     float thickness{2.f};
     float currentXballPosition{0.f};
     float currentYballPosition{0.f};
-    BallMovement ballMovement{radius};
+    BallDirections ballDirections1;
+    BallMovement ballMovement{radius,ballDirections1};
     std::vector<sf::RectangleShape> rectangles;
+    bool isBonusDropped{false};
+    //BonusManager bonusManager;
 };
 
 #endif //ARKANOID_BALL_H

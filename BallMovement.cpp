@@ -1,8 +1,9 @@
 #include <iostream>
 #include "BallMovement.h"
 
-BallMovement::BallMovement(float radiusOfBall)
+BallMovement::BallMovement(float radiusOfBall,BallDirections ballDirections)
 {
+    //this->ballDirections = ballDirections;
     this->radiusOfBall = radiusOfBall;
 }
 
@@ -16,20 +17,20 @@ void BallMovement::fillUpSectorsValues(Platform &platform)
     }
 }
 
-std::pair<float, float>
+std::tuple<float, float, bool>
 BallMovement::changePositionOfBall(Platform &platform, float currentXposition, float currentYposition,
                                    int xSizeOfWindow, int ySizeOfWindow, std::vector<sf::RectangleShape> &rectangles)
 {
     prewiousState = ballDirections;
     fillUpSectorsValues(platform);
-    checkBlockTouch(rectangles, currentXposition, currentYposition);
+    bool isBlockDestroyed = checkBlockTouch(rectangles, currentXposition, currentYposition);
     checkCeilingTouch(currentXposition, currentYposition);
     checkPlatformTouch(currentXposition, currentYposition, platform, ySizeOfWindow);
     checkLeftWallTouch(currentXposition, currentYposition);
     checkRightWallTouch(currentXposition, currentYposition, xSizeOfWindow);
     gameOver.checkIfBallUnderPlatform(currentYposition, platform.getYOfPlatform());
 
-    return updateBallPosition(currentXposition, currentYposition);
+    return updateBallPosition(currentXposition, currentYposition, isBlockDestroyed);
 }
 
 void BallMovement::checkCeilingTouch(float xOfBall, float yOfBall)
@@ -89,7 +90,7 @@ void BallMovement::checkRightWallTouch(float xOfBall, float yOfBall, int xSizeOf
 
 }
 
-std::pair<float, float> BallMovement::updateBallPosition(float currentXposition, float currentYposition)
+std::tuple<float, float, bool> BallMovement::updateBallPosition(float currentXposition, float currentYposition, bool isBlockDestroyed)
 {
 
     switch (ballDirections)
@@ -114,7 +115,7 @@ std::pair<float, float> BallMovement::updateBallPosition(float currentXposition,
         std::cout << "Invalid ball direction!" << std::endl;
         break;
     }
-    return std::pair<float, float>(currentXposition, currentYposition);
+    return std::tuple<float, float, bool>(currentXposition, currentYposition,isBlockDestroyed);
 }
 
 bool BallMovement::checkBallOnPlatform(float xOfBall, float yOfBall, Platform &platform, int ySizeOfWindow)
@@ -163,9 +164,10 @@ std::string BallMovement::printBallDirection(BallDirections ballDirections)
     return "nothing";
 }
 
-void BallMovement::checkBlockTouch(std::vector<sf::RectangleShape> &rectangles, float currentXposition,
+bool BallMovement::checkBlockTouch(std::vector<sf::RectangleShape> &rectangles, float currentXposition,
                                    float currentYposition)
 {
+    bool isBlockDestroyed{false};
     for (int indexOfRectangle = 0; indexOfRectangle < rectangles.size(); indexOfRectangle++)
     {
         if (checkIfBottomSideBlockTouched(rectangles, currentXposition, currentYposition, indexOfRectangle))
@@ -179,7 +181,7 @@ void BallMovement::checkBlockTouch(std::vector<sf::RectangleShape> &rectangles, 
                 ballDirections = BallDirections::DOWN_LEFT;
             }
             rectangles.erase(rectangles.begin() + indexOfRectangle);
-            //std::cout<<"index: "<<indexOfRectangle<<std::endl;
+            isBlockDestroyed=true;
             break;
         }
         else if (checkIfLeftSideBlockTouched(rectangles, currentXposition, currentYposition, indexOfRectangle))
@@ -194,6 +196,7 @@ void BallMovement::checkBlockTouch(std::vector<sf::RectangleShape> &rectangles, 
             }
             rectangles.erase(rectangles.begin() + indexOfRectangle);
             //std::cout<<"index: "<<indexOfRectangle<<std::endl;
+            isBlockDestroyed=true;
             break;
         }
         else if (checkIfRightSideBlockTouched(rectangles, currentXposition, currentYposition, indexOfRectangle))
@@ -208,6 +211,7 @@ void BallMovement::checkBlockTouch(std::vector<sf::RectangleShape> &rectangles, 
             }
             rectangles.erase(rectangles.begin() + indexOfRectangle);
             //std::cout<<"index: "<<indexOfRectangle<<std::endl;
+            isBlockDestroyed=true;
             break;
         }
         else if (checkIfTopSideBlockTouched(rectangles, currentXposition, currentYposition, indexOfRectangle))
@@ -221,9 +225,11 @@ void BallMovement::checkBlockTouch(std::vector<sf::RectangleShape> &rectangles, 
                 ballDirections = BallDirections::UP_LEFT;
             }
             rectangles.erase(rectangles.begin() + indexOfRectangle);
+            isBlockDestroyed=true;
             break;
         }
     }
+    return isBlockDestroyed;
 }
 
 bool BallMovement::checkIfBottomSideBlockTouched(std::vector<sf::RectangleShape> &rectangles, float currentXposition,
@@ -266,3 +272,4 @@ bool BallMovement::checkIfRightSideBlockTouched(std::vector<sf::RectangleShape> 
             currentYposition > rectangles[indexOfRectangle].getPosition().y &&
             currentYposition < rectangles[indexOfRectangle].getPosition().y + rectangles[indexOfRectangle].getSize().y);
 }
+

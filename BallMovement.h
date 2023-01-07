@@ -2,20 +2,25 @@
 #define ARKANOID_BALLMOVEMENT_H
 
 #include <vector>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include "Platform.h"
 #include "BallDirections.h"
 #include "GameOver.h"
+#include "Bonus.h"
 
 class BallMovement
 {
 public:
-    BallMovement(float radiusOfBall);
+    BallMovement(float radiusOfBall, BallDirections ballDirections);
 
     void fillUpSectorsValues(Platform &platform);
 
-    std::pair<float, float>
+    std::tuple<float, float, bool>
     changePositionOfBall(Platform &platform, float currentXposition, float currentYposition, int xSizeOfWindow,
                          int ySizeOfWindow, std::vector<sf::RectangleShape> &rectangles);
+
+    void drawBonus(sf::RenderWindow &window);
 
 private:
     void checkCeilingTouch(float xOfBall, float yOfBall);
@@ -28,7 +33,7 @@ private:
 
     bool checkBallOnPlatform(float xOfBall, float yOfBall, Platform &platform, int ySizeOfWindow);
 
-    std::pair<float, float> updateBallPosition(float currentXPosition, float currentYPosition);
+    std::tuple<float, float, bool> updateBallPosition(float currentXPosition, float currentYPosition, bool isBlockDestroyed);
 
     void calculatePartOfPlatformWhereBallWasBounced(float xOfBall, Platform &platform);
 
@@ -44,10 +49,13 @@ private:
     bool checkIfRightSideBlockTouched(std::vector<sf::RectangleShape> &rectangles, float currentXposition,
                                       float currentYposition, int indexOfRectangle);
 
-    void checkBlockTouch(std::vector<sf::RectangleShape> &rectangles, float currentXposition, float currentYposition);
+    bool checkBlockTouch(std::vector<sf::RectangleShape> &rectangles, float currentXposition, float currentYposition);
 
     std::string printBallDirection(BallDirections ballDirections);
 
+
+
+    void setUpDoubleBallBonusIcon();
 
     float radiusOfBall{0};
     const float numberOfSectors{20};
@@ -60,6 +68,7 @@ private:
     BallDirections ballDirections{BallDirections::UP_RIGHT};
     BallDirections prewiousState{BallDirections::UP_RIGHT};
     GameOver gameOver;
+
 
 };
 

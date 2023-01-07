@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Blocks.h"
 
 Blocks::Blocks(int xWindowSize, int yWindowSize)
@@ -39,5 +40,6 @@ void Blocks::setRowsOfBlocks()
 void Blocks::setRectangles(std::vector<sf::RectangleShape> &rect)
 {
     rectangles=rect;
+
 }
 

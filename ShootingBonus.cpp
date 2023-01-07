@@ -21,7 +21,6 @@ void ShootingBonus::setGunsPosition(float xPositionOfPlatform, float yPositionOf
     rightGun.setFillColor({180, 0, 255});
 
     counter++;
-    // std::cout << counter << std::endl;
 
     if (!isBulletFired && counter % bulletSpeed == 0)
     {
