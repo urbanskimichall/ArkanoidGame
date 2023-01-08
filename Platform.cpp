@@ -23,11 +23,21 @@ void Platform::setPlatformPosition(int xMousePosition)
     {
         xOfPlatform = xMousePosition - sizeOfPlatform.x / 2;
         platform.setPosition(xOfPlatform, yOfPlatform);
-        if(isShootingBonusActive)
+        if (isShootingBonusActive)
         {
             shootingBonus.setGunsPosition(xOfPlatform, yOfPlatform, sizeXofPlatform);
         }
 
+    }
+    if (isBiggerPlatformBonusActive)
+    {
+        sizeOfPlatform = {sizeXofPlatform * 2, sizeYofPlatform};
+        platform.setSize(sizeOfPlatform);
+    }
+    else
+    {
+        sizeOfPlatform = {sizeXofPlatform, sizeYofPlatform};
+        platform.setSize(sizeOfPlatform);
     }
 }
 
@@ -49,7 +59,7 @@ float Platform::getXOfPlatform()
 
 float Platform::getSizeXOfPlatform()
 {
-    return sizeXofPlatform;
+    return sizeOfPlatform.x;
 }
 
 float Platform::getSizeYOfPlatform()
@@ -60,7 +70,7 @@ float Platform::getSizeYOfPlatform()
 void Platform::drawPlatform(sf::RenderWindow &window)
 {
     window.draw(platform);
-    if(isShootingBonusActive)
+    if (isShootingBonusActive)
     {
         shootingBonus.drawGuns(window);
     }
@@ -74,8 +84,8 @@ std::vector<std::tuple<sf::RectangleShape, float, float>> &Platform::getBullets(
 
 void Platform::setShootingBonusActiveFlag(bool isShootingActive)
 {
-    this->isShootingBonusActive=isShootingActive;
-    if(!isShootingActive)
+    this->isShootingBonusActive = isShootingActive;
+    if (!isShootingActive)
     {
         clearBullets();
     }
@@ -85,4 +95,9 @@ void Platform::setShootingBonusActiveFlag(bool isShootingActive)
 void Platform::clearBullets()
 {
     getBullets().clear();
+}
+
+void Platform::setIsBiggerPlatformBonusActive(bool isPlatformBigger)
+{
+    this->isBiggerPlatformBonusActive = isPlatformBigger;
 }

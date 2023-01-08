@@ -3,7 +3,7 @@
 
 enum class Bonus
 {
-    NO_BONUS=0,
+    NO_BONUS = 0,
     SMALLER_PLATFORM,
     BIGGER_PLATFORM,
     DOUBLE_BALL,

@@ -32,9 +32,13 @@ private:
 
     void setUpShootingBonusIcon();
 
+    void setUpBiggerPlatformBonusIcon();
+
     void deactivationOfDoubleBall(Bonus bonus);
 
-    void deactivationOfShootingBonus(Bonus bonus);
+    void deactivationOfBiggerPlatform(Bonus bonus);
+
+    void deactivationOfShooting(Bonus bonus);
 
     void activationOfDoubleBallBonus(const Bonus, std::vector<sf::RectangleShape> &rectangles);
 
@@ -45,6 +49,8 @@ private:
     sf::Texture doubleBallTexture;
     sf::Sprite shootingSprite;
     sf::Texture shootingTexture;
+    sf::Texture biggerPlatformTexture;
+    sf::Sprite biggerPlatformSprite;
     std::map<Bonus, bool> bonuses;
     int counterOfElapsedTimeUntilBallBonusWasActivated{0};
     std::vector<Ball> balls;

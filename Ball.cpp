@@ -3,7 +3,7 @@
 
 Ball::Ball(std::vector<sf::RectangleShape> &rectangles, BallDirections ballDirections)
 {
-    this->ballDirections1=ballDirections;
+    this->ballDirections1 = ballDirections;
     this->rectangles = rectangles;
     ball.setRadius(radius);
     ball.setFillColor(colorOfBall);
@@ -28,11 +28,11 @@ void Ball::setBallPosition(Platform &platform, int xSizeOfWindow, int ySizeOfWin
         currentXballPosition = std::get<0>(ballCords);
         currentYballPosition = std::get<1>(ballCords);
         ball.setPosition(std::get<0>(ballCords), std::get<1>(ballCords));
-        if(std::get<2>(ballCords))
+        if (std::get<2>(ballCords))
         {
-            isBonusDropped=true;
+            isBonusDropped = true;
         }
-       // bonusManager.updateBonusIconPosition(platform);
+        // bonusManager.updateBonusIconPosition(platform);
     }
 }
 
@@ -81,10 +81,10 @@ bool Ball::getIsBonusDropped()
 
 std::pair<float, float> Ball::getXYofBall()
 {
-    return std::pair<float, float>(currentXballPosition,currentYballPosition);
+    return std::pair<float, float>(currentXballPosition, currentYballPosition);
 }
 
 void Ball::setIsBonusDropped(bool changedBonusDroppedFlag)
 {
-    isBonusDropped=changedBonusDroppedFlag;
+    isBonusDropped = changedBonusDroppedFlag;
 }
