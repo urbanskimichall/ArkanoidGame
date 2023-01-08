@@ -39,6 +39,16 @@ void Platform::setPlatformPosition(int xMousePosition)
         sizeOfPlatform = {sizeXofPlatform, sizeYofPlatform};
         platform.setSize(sizeOfPlatform);
     }
+    if (isSmallerPlatformBonusActive)
+    {
+        sizeOfPlatform = {sizeXofPlatform / 2, sizeYofPlatform};
+        platform.setSize(sizeOfPlatform);
+    }
+    else
+    {
+        sizeOfPlatform = {sizeXofPlatform, sizeYofPlatform};
+        platform.setSize(sizeOfPlatform);
+    }
 }
 
 bool Platform::checkMousePosition(int xMousePosition)
@@ -100,4 +110,9 @@ void Platform::clearBullets()
 void Platform::setIsBiggerPlatformBonusActive(bool isPlatformBigger)
 {
     this->isBiggerPlatformBonusActive = isPlatformBigger;
+}
+
+void Platform::setIsSmallerPlatformBonusActive(bool isPlatformSmaller)
+{
+    this->isSmallerPlatformBonusActive = isPlatformSmaller;
 }

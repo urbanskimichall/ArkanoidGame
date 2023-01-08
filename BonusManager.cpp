@@ -16,6 +16,7 @@ BonusManager::BonusManager(Blocks &blocks)
     setUpDoubleBallBonusIcon();
     setUpShootingBonusIcon();
     setUpBiggerPlatformBonusIcon();
+    setUpSmallerPlatformBonusIcon();
 }
 
 void BonusManager::generateBonus(std::vector<sf::RectangleShape> &rectangles, Platform &platform)
@@ -27,11 +28,11 @@ void BonusManager::generateBonus(std::vector<sf::RectangleShape> &rectangles, Pl
             counterOfRemovedRectangles++;
             if (counterOfRemovedRectangles % 3 == 1)
             {
-                auto iter = bonuses.find(static_cast<Bonus>(2));
+                auto iter = bonuses.find(static_cast<Bonus>(1));
                 if (iter == bonuses.end())
                 {
-                    biggerPlatformSprite.setPosition(ball.getXYofBall().first, ball.getXYofBall().second);
-                    bonuses[static_cast<Bonus>(2)] = false;
+                    smallerPlatformSprite.setPosition(ball.getXYofBall().first, ball.getXYofBall().second);
+                    bonuses[static_cast<Bonus>(1)] = false;
                 }
             }
         }
@@ -52,6 +53,7 @@ void BonusManager::drawBonus(sf::RenderWindow &window)
     window.draw(doubleBallSprite);
     window.draw(shootingSprite);
     window.draw(biggerPlatformSprite);
+    window.draw(smallerPlatformSprite);
 }
 
 void BonusManager::updateBonusIconPosition(Platform &platform, std::vector<sf::RectangleShape> &rectangles)
@@ -126,6 +128,30 @@ void BonusManager::updateBonusIconPosition(Platform &platform, std::vector<sf::R
                 counterOfElapsedTimeUntilBallBonusWasActivated++;
             }
             break;
+
+        }
+        case Bonus::SMALLER_PLATFORM:
+        {
+            float currentYBonusIconPosition = smallerPlatformSprite.getPosition().y;
+            float currentXBonusIconPosition = smallerPlatformSprite.getPosition().x;
+            currentYBonusIconPosition += 2.7;
+            smallerPlatformSprite.setPosition(currentXBonusIconPosition, currentYBonusIconPosition);
+            std::cout << counterOfElapsedTimeUntilBallBonusWasActivated << std::endl;
+            if (isBonusCaughtByPlatform(platform, currentXBonusIconPosition, currentYBonusIconPosition))
+            {
+                bonuses[bonus] = true;
+                platform.setIsSmallerPlatformBonusActive(true);
+            }
+            if (counterOfElapsedTimeUntilBallBonusWasActivated == 1200 && bonuses[bonus])
+            {
+                platform.setIsSmallerPlatformBonusActive(false);
+                deactivationOfSmallerPlatform(bonus);
+            }
+            else if (bonuses[bonus])
+            {
+                counterOfElapsedTimeUntilBallBonusWasActivated++;
+            }
+            break;
         }
 
         default:
@@ -171,6 +197,13 @@ void BonusManager::deactivationOfBiggerPlatform(Bonus bonus)
     counterOfElapsedTimeUntilBallBonusWasActivated = 0;
 }
 
+void BonusManager::deactivationOfSmallerPlatform(const Bonus bonus)
+{
+    bonuses[bonus] = false;
+    bonuses.erase({Bonus::SMALLER_PLATFORM});
+    counterOfGeneratedBalls = 0;
+    counterOfElapsedTimeUntilBallBonusWasActivated = 0;
+}
 
 void BonusManager::activationOfDoubleBallBonus(const Bonus bonus, std::vector<sf::RectangleShape> &rectangles)
 {
@@ -203,3 +236,11 @@ void BonusManager::setUpBiggerPlatformBonusIcon()
     biggerPlatformSprite.setTexture(biggerPlatformTexture);
     biggerPlatformSprite.setPosition(-200, -200);
 }
+
+void BonusManager::setUpSmallerPlatformBonusIcon()
+{
+    smallerPlatformTexture.loadFromFile("../Pictures/SmallerPlatform.png");
+    smallerPlatformSprite.setTexture(smallerPlatformTexture);
+    smallerPlatformSprite.setPosition(-200, -200);
+}
+

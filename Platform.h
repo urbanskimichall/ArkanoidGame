@@ -33,6 +33,8 @@ public:
 
     void setIsBiggerPlatformBonusActive(bool isPlatformBigger);
 
+    void setIsSmallerPlatformBonusActive(bool isPlatformSmaller);
+
 private:
     bool checkMousePosition(int xMousePosition);
 
@@ -49,6 +51,7 @@ private:
     float yOfPlatform{ySizeOfWindow - 50};
     bool isShootingBonusActive{false};
     bool isBiggerPlatformBonusActive{false};
+    bool isSmallerPlatformBonusActive{false};
 
     ShootingBonus shootingBonus;
 
