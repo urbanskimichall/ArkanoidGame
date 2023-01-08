@@ -1,9 +1,8 @@
 #include <iostream>
 #include "BallMovement.h"
 
-BallMovement::BallMovement(float radiusOfBall,BallDirections ballDirections)
+BallMovement::BallMovement(float radiusOfBall, BallDirections ballDirections)
 {
-    //this->ballDirections = ballDirections;
     this->radiusOfBall = radiusOfBall;
 }
 
@@ -21,7 +20,6 @@ std::tuple<float, float, bool>
 BallMovement::changePositionOfBall(Platform &platform, float currentXposition, float currentYposition,
                                    int xSizeOfWindow, int ySizeOfWindow, std::vector<sf::RectangleShape> &rectangles)
 {
-    prewiousState = ballDirections;
     fillUpSectorsValues(platform);
     bool isBlockDestroyed = checkBlockTouch(rectangles, currentXposition, currentYposition);
     checkCeilingTouch(currentXposition, currentYposition);
@@ -29,7 +27,6 @@ BallMovement::changePositionOfBall(Platform &platform, float currentXposition, f
     checkLeftWallTouch(currentXposition, currentYposition);
     checkRightWallTouch(currentXposition, currentYposition, xSizeOfWindow);
     gameOver.checkIfBallUnderPlatform(currentYposition, platform.getYOfPlatform());
-
     return updateBallPosition(currentXposition, currentYposition, isBlockDestroyed);
 }
 
@@ -90,32 +87,33 @@ void BallMovement::checkRightWallTouch(float xOfBall, float yOfBall, int xSizeOf
 
 }
 
-std::tuple<float, float, bool> BallMovement::updateBallPosition(float currentXposition, float currentYposition, bool isBlockDestroyed)
+std::tuple<float, float, bool>
+BallMovement::updateBallPosition(float currentXposition, float currentYposition, bool isBlockDestroyed)
 {
 
     switch (ballDirections)
     {
     case BallDirections::UP_RIGHT:
-        currentXposition += ballBounceCoefficient * speedMultiplikator;
-        currentYposition -= 0.1f * speedMultiplikator;
+        currentXposition += ballBounceCoefficient * speedMultiplicator;
+        currentYposition -= 0.1f * speedMultiplicator;
         break;
     case BallDirections::UP_LEFT:
-        currentXposition -= ballBounceCoefficient * speedMultiplikator;
-        currentYposition -= 0.1f * speedMultiplikator;
+        currentXposition -= ballBounceCoefficient * speedMultiplicator;
+        currentYposition -= 0.1f * speedMultiplicator;
         break;
     case BallDirections::DOWN_RIGHT:
-        currentXposition += ballBounceCoefficient * speedMultiplikator;
-        currentYposition += 0.1f * speedMultiplikator;
+        currentXposition += ballBounceCoefficient * speedMultiplicator;
+        currentYposition += 0.1f * speedMultiplicator;
         break;
     case BallDirections::DOWN_LEFT:
-        currentXposition -= ballBounceCoefficient * speedMultiplikator;
-        currentYposition += 0.1f * speedMultiplikator;
+        currentXposition -= ballBounceCoefficient * speedMultiplicator;
+        currentYposition += 0.1f * speedMultiplicator;
         break;
     case BallDirections::INVALID:
         std::cout << "Invalid ball direction!" << std::endl;
         break;
     }
-    return std::tuple<float, float, bool>(currentXposition, currentYposition,isBlockDestroyed);
+    return std::tuple<float, float, bool>(currentXposition, currentYposition, isBlockDestroyed);
 }
 
 bool BallMovement::checkBallOnPlatform(float xOfBall, float yOfBall, Platform &platform, int ySizeOfWindow)
@@ -139,10 +137,6 @@ void BallMovement::calculatePartOfPlatformWhereBallWasBounced(float xOfBall, Pla
         indexOfSector = 19;
     }
     ballBounceCoefficient = directionsOfBall[indexOfSector];
-
-//    std::cout << "index " << indexOfSector << " prewiousState: " << printBallDirection(prewiousState) << "actualState: "
-//              << printBallDirection(ballDirections) << std::endl;
-
 }
 
 std::string BallMovement::printBallDirection(BallDirections ballDirections)
@@ -159,7 +153,6 @@ std::string BallMovement::printBallDirection(BallDirections ballDirections)
         return "BallDirections::DOWN_LEFT";
     case BallDirections::DOWN_RIGHT:
         return "BallDirections::DOWN_RIGHT";
-
     }
     return "nothing";
 }
@@ -181,7 +174,7 @@ bool BallMovement::checkBlockTouch(std::vector<sf::RectangleShape> &rectangles, 
                 ballDirections = BallDirections::DOWN_LEFT;
             }
             rectangles.erase(rectangles.begin() + indexOfRectangle);
-            isBlockDestroyed=true;
+            isBlockDestroyed = true;
             break;
         }
         else if (checkIfLeftSideBlockTouched(rectangles, currentXposition, currentYposition, indexOfRectangle))
@@ -195,8 +188,7 @@ bool BallMovement::checkBlockTouch(std::vector<sf::RectangleShape> &rectangles, 
                 ballDirections = BallDirections::DOWN_LEFT;
             }
             rectangles.erase(rectangles.begin() + indexOfRectangle);
-            //std::cout<<"index: "<<indexOfRectangle<<std::endl;
-            isBlockDestroyed=true;
+            isBlockDestroyed = true;
             break;
         }
         else if (checkIfRightSideBlockTouched(rectangles, currentXposition, currentYposition, indexOfRectangle))
@@ -210,8 +202,7 @@ bool BallMovement::checkBlockTouch(std::vector<sf::RectangleShape> &rectangles, 
                 ballDirections = BallDirections::DOWN_RIGHT;
             }
             rectangles.erase(rectangles.begin() + indexOfRectangle);
-            //std::cout<<"index: "<<indexOfRectangle<<std::endl;
-            isBlockDestroyed=true;
+            isBlockDestroyed = true;
             break;
         }
         else if (checkIfTopSideBlockTouched(rectangles, currentXposition, currentYposition, indexOfRectangle))
@@ -225,7 +216,7 @@ bool BallMovement::checkBlockTouch(std::vector<sf::RectangleShape> &rectangles, 
                 ballDirections = BallDirections::UP_LEFT;
             }
             rectangles.erase(rectangles.begin() + indexOfRectangle);
-            isBlockDestroyed=true;
+            isBlockDestroyed = true;
             break;
         }
     }

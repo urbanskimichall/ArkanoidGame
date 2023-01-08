@@ -22,12 +22,9 @@ void BonusManager::generateBonus(std::vector<sf::RectangleShape> &rectangles, Pl
     {
         if (ball.getIsBonusDropped())
         {
-            const unsigned long long int numberOfRectangles{rectangles.size()};
-
             counterOfRemovedRectangles++;
             if (counterOfRemovedRectangles % 3 == 1)
             {
-                std::cout << "bonus is coming" << std::endl;
                 auto iter = bonuses.find(static_cast<Bonus>(3));
                 if (iter == bonuses.end())
                 {
@@ -60,43 +57,23 @@ void BonusManager::updateBonusIconPosition(Platform &platform, std::vector<sf::R
         switch (bonus)
         {
         case Bonus::DOUBLE_BALL:
-
             float currentYBonusIconPosition = doubleBallSprite.getPosition().y;
-            float currentXBonusIconPosiotion = doubleBallSprite.getPosition().x;
-            currentYBonusIconPosition += 0.7;
-            doubleBallSprite.setPosition(currentXBonusIconPosiotion, currentYBonusIconPosition);
-            if (platform.getYOfPlatform() < currentYBonusIconPosition &&
-                platform.getXOfPlatform() < currentXBonusIconPosiotion &&
-                platform.getXOfPlatform() + platform.getSizeXOfPlatform() > currentXBonusIconPosiotion)
+            float currentXBonusIconPosition = doubleBallSprite.getPosition().x;
+            currentYBonusIconPosition += 2.7;
+            doubleBallSprite.setPosition(currentXBonusIconPosition, currentYBonusIconPosition);
+            if (isBonusCaughtByPlatform(platform, currentXBonusIconPosition, currentYBonusIconPosition))
             {
-                bonuses[bonus] = true;
-                if (counterOfGeneratedBalls < 1)
-                {
-                    Ball ball2(rectangles, BallDirections::UP_LEFT);
-                    balls.push_back(ball2);
-                }
-                counterOfGeneratedBalls++;
-                std::cout << "bonus przejety" << std::endl;
+                activationOfDoubleBallBonus(bonus, rectangles);
             }
-
-            if (counterOfElapsedTimeUntilBallBonusWasActivated == 1200 && bonuses[bonus] == true)
+            if (counterOfElapsedTimeUntilBallBonusWasActivated == 1200 && bonuses[bonus])
             {
-                bonuses[bonus] = false;
-                std::cout << bonuses.size() << std::endl;
-                balls.pop_back();
-                bonuses.erase({Bonus::DOUBLE_BALL});
+                deactivationOfDoubleBall(bonus);
             }
-            else
+            else if (bonuses[bonus])
             {
                 counterOfElapsedTimeUntilBallBonusWasActivated++;
             }
-//            if (bonuses[bonus])
-//            {
-//                counterOfElapsedTimeUntilBallBonusWasActivated++;
-//            }
-
             break;
-
         }
     }
 }
@@ -106,12 +83,35 @@ std::map<Bonus, bool> &BonusManager::getBonuses()
     return bonuses;
 }
 
-BonusManager::BonusManager()
-{
-
-}
-
 std::vector<Ball> &BonusManager::getBalls()
 {
     return balls;
+}
+
+void BonusManager::deactivationOfDoubleBall(Bonus bonus)
+{
+    bonuses[bonus] = false;
+    std::cout << bonuses.size() << std::endl;
+    balls.pop_back();
+    bonuses.erase({Bonus::DOUBLE_BALL});
+    counterOfGeneratedBalls = 0;
+    counterOfElapsedTimeUntilBallBonusWasActivated = 0;
+}
+
+void BonusManager::activationOfDoubleBallBonus(const Bonus bonus, std::vector<sf::RectangleShape> &rectangles)
+{
+    bonuses[bonus] = true;
+    if (counterOfGeneratedBalls < 1)
+    {
+        Ball ball2(rectangles, BallDirections::UP_LEFT);
+        balls.push_back(ball2);
+    }
+    counterOfGeneratedBalls++;
+}
+
+bool BonusManager::isBonusCaughtByPlatform(Platform &platform, float xIconPosition, float yIconPosition)
+{
+    return platform.getYOfPlatform() < yIconPosition &&
+           platform.getXOfPlatform() < xIconPosition &&
+           platform.getXOfPlatform() + platform.getSizeXOfPlatform() > xIconPosition;
 }

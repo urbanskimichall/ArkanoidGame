@@ -31,7 +31,7 @@ public:
 
     bool getIsBonusDropped();
 
-    std::pair<float,float>getXYofBall();
+    std::pair<float, float> getXYofBall();
 
     void setIsBonusDropped(bool b);
 
@@ -44,7 +44,7 @@ private:
     float currentXballPosition{0.f};
     float currentYballPosition{0.f};
     BallDirections ballDirections1;
-    BallMovement ballMovement{radius,ballDirections1};
+    BallMovement ballMovement{radius, ballDirections1};
     std::vector<sf::RectangleShape> rectangles;
     bool isBonusDropped{false};
     //BonusManager bonusManager;

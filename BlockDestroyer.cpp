@@ -14,7 +14,6 @@ std::vector<sf::RectangleShape> BlockDestroyer::removeBlockAfterShoot(std::vecto
 {
     for (int i = 0; i < platform1.getBullets().size(); i++)
     {
-        //auto blocks = blocks1.getBlock();
         auto iterLeft = std::find_if(rectangles.begin(), rectangles.end(), [=](auto rectangle)
         {
             return (rectangle.getPosition().x < std::get<0>(bullets[i]).getPosition().x &&
@@ -34,6 +33,5 @@ std::vector<sf::RectangleShape> BlockDestroyer::removeBlockAfterShoot(std::vecto
             bullets.erase(bullets.begin() + i);
         }
     }
-
     return rectangles;
 }

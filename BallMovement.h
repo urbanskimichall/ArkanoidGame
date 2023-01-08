@@ -33,7 +33,8 @@ private:
 
     bool checkBallOnPlatform(float xOfBall, float yOfBall, Platform &platform, int ySizeOfWindow);
 
-    std::tuple<float, float, bool> updateBallPosition(float currentXPosition, float currentYPosition, bool isBlockDestroyed);
+    std::tuple<float, float, bool>
+    updateBallPosition(float currentXPosition, float currentYPosition, bool isBlockDestroyed);
 
     void calculatePartOfPlatformWhereBallWasBounced(float xOfBall, Platform &platform);
 
@@ -53,22 +54,16 @@ private:
 
     std::string printBallDirection(BallDirections ballDirections);
 
-
-
-    void setUpDoubleBallBonusIcon();
-
     float radiusOfBall{0};
     const float numberOfSectors{20};
     int indexOfSector{0};
-    const float speedMultiplikator{50};
+    const float speedMultiplicator{50};
     float ballBounceCoefficient{0.05f};
     std::vector<float> directionsOfBall{0.2, 0.17, 0.15, 0.12, 0.1, 0.07, 0.05, 0.03, 0.02, 0.01, 0.02, 0.03,
                                         0.05, 0.07, 0.1, 0.12, 0.15, 0.17, 0.19, 0.2};
     std::vector<float> sectorsOfPlatform{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     BallDirections ballDirections{BallDirections::UP_RIGHT};
-    BallDirections prewiousState{BallDirections::UP_RIGHT};
     GameOver gameOver;
-
 
 };
 

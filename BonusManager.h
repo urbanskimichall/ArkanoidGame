@@ -15,35 +15,34 @@
 class BonusManager
 {
 public:
-    BonusManager();
-    //BonusManager(Blocks &blocks);
-
     BonusManager(Blocks &blocks);
 
     void drawBonus(sf::RenderWindow &window);
 
     void generateBonus(std::vector<sf::RectangleShape> &rectangles, Platform &platform);
 
-    void updateBonusIconPosition(Platform &platform,std::vector<sf::RectangleShape> &rectangles);
+    void updateBonusIconPosition(Platform &platform, std::vector<sf::RectangleShape> &rectangles);
 
-    std::map<Bonus,bool> &getBonuses();
+    std::map<Bonus, bool> &getBonuses();
 
     std::vector<Ball> &getBalls();
 
 private:
     void setUpDoubleBallBonusIcon();
 
+    void deactivationOfDoubleBall(Bonus bonus);
+
+    void activationOfDoubleBallBonus(const Bonus, std::vector<sf::RectangleShape> &rectangles);
+
+    bool isBonusCaughtByPlatform(Platform &platform, float xIconPosition, float yIconPosition);
+
     int counterOfRemovedRectangles{0};
     sf::Sprite doubleBallSprite;
     sf::Texture doubleBallTexture;
-    //std::vector<Bonus>bonuses;
-    std::map<Bonus,bool>bonuses;
+    std::map<Bonus, bool> bonuses;
     int counterOfElapsedTimeUntilBallBonusWasActivated{0};
     std::vector<Ball> balls;
     int counterOfGeneratedBalls{0};
-
-
-
 };
 
 #endif //ARKANOID_BONUSMANAGER_H
