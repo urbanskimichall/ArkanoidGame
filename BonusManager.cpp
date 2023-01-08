@@ -14,6 +14,7 @@ BonusManager::BonusManager(Blocks &blocks)
 //    Ball ball4(blocks.getBlock(), BallDirections::UP_LEFT);
 //    balls.push_back(ball4);
     setUpDoubleBallBonusIcon();
+    setUpShootingBonusIcon();
 }
 
 void BonusManager::generateBonus(std::vector<sf::RectangleShape> &rectangles, Platform &platform)
@@ -25,11 +26,11 @@ void BonusManager::generateBonus(std::vector<sf::RectangleShape> &rectangles, Pl
             counterOfRemovedRectangles++;
             if (counterOfRemovedRectangles % 3 == 1)
             {
-                auto iter = bonuses.find(static_cast<Bonus>(3));
+                auto iter = bonuses.find(static_cast<Bonus>(4));
                 if (iter == bonuses.end())
                 {
-                    doubleBallSprite.setPosition(ball.getXYofBall().first, ball.getXYofBall().second);
-                    bonuses[static_cast<Bonus>(3)] = false;
+                    shootingSprite.setPosition(ball.getXYofBall().first, ball.getXYofBall().second);
+                    bonuses[static_cast<Bonus>(4)] = false;
                 }
             }
         }
@@ -48,6 +49,7 @@ void BonusManager::setUpDoubleBallBonusIcon()
 void BonusManager::drawBonus(sf::RenderWindow &window)
 {
     window.draw(doubleBallSprite);
+    window.draw(shootingSprite);
 }
 
 void BonusManager::updateBonusIconPosition(Platform &platform, std::vector<sf::RectangleShape> &rectangles)
@@ -57,6 +59,7 @@ void BonusManager::updateBonusIconPosition(Platform &platform, std::vector<sf::R
         switch (bonus)
         {
         case Bonus::DOUBLE_BALL:
+        {
             float currentYBonusIconPosition = doubleBallSprite.getPosition().y;
             float currentXBonusIconPosition = doubleBallSprite.getPosition().x;
             currentYBonusIconPosition += 2.7;
@@ -73,6 +76,34 @@ void BonusManager::updateBonusIconPosition(Platform &platform, std::vector<sf::R
             {
                 counterOfElapsedTimeUntilBallBonusWasActivated++;
             }
+            break;
+        }
+
+        case Bonus::SHOOTING:
+        {
+            float currentYBonusIconPosition = shootingSprite.getPosition().y;
+            float currentXBonusIconPosition = shootingSprite.getPosition().x;
+            currentYBonusIconPosition += 2.7;
+            shootingSprite.setPosition(currentXBonusIconPosition, currentYBonusIconPosition);
+            std::cout << counterOfElapsedTimeUntilBallBonusWasActivated << std::endl;
+            if (isBonusCaughtByPlatform(platform, currentXBonusIconPosition, currentYBonusIconPosition))
+            {
+                bonuses[bonus] = true;
+                platform.setShootingBonusActiveFlag(true);
+            }
+            if (counterOfElapsedTimeUntilBallBonusWasActivated == 1200 && bonuses[bonus])
+            {
+                platform.setShootingBonusActiveFlag(false);
+                deactivationOfShootingBonus(bonus);
+            }
+            else if (bonuses[bonus])
+            {
+                counterOfElapsedTimeUntilBallBonusWasActivated++;
+            }
+            break;
+        }
+
+        default:
             break;
         }
     }
@@ -98,6 +129,15 @@ void BonusManager::deactivationOfDoubleBall(Bonus bonus)
     counterOfElapsedTimeUntilBallBonusWasActivated = 0;
 }
 
+void BonusManager::deactivationOfShootingBonus(Bonus bonus)
+{
+    bonuses[bonus] = false;
+    bonuses.erase({Bonus::SHOOTING});
+    counterOfGeneratedBalls = 0;
+    counterOfElapsedTimeUntilBallBonusWasActivated = 0;
+}
+
+
 void BonusManager::activationOfDoubleBallBonus(const Bonus bonus, std::vector<sf::RectangleShape> &rectangles)
 {
     bonuses[bonus] = true;
@@ -114,4 +154,11 @@ bool BonusManager::isBonusCaughtByPlatform(Platform &platform, float xIconPositi
     return platform.getYOfPlatform() < yIconPosition &&
            platform.getXOfPlatform() < xIconPosition &&
            platform.getXOfPlatform() + platform.getSizeXOfPlatform() > xIconPosition;
+}
+
+void BonusManager::setUpShootingBonusIcon()
+{
+    shootingTexture.loadFromFile("../Pictures/Shooting.png");
+    shootingSprite.setTexture(shootingTexture);
+    shootingSprite.setPosition(-200, -200);
 }

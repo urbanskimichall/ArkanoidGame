@@ -29,6 +29,8 @@ public:
 
     std::vector<std::tuple<sf::RectangleShape, float, float>> &getBullets();
 
+    void setShootingBonusActiveFlag(bool isShootingActive);
+
 private:
     bool checkMousePosition(int xMousePosition);
 
@@ -43,9 +45,11 @@ private:
     float ySizeOfWindow{0};
     float xOfPlatform{350};
     float yOfPlatform{ySizeOfWindow - 50};
-
+    bool isShootingBonusActive{false};
 
     ShootingBonus shootingBonus;
+
+    void clearBullets();
 };
 
 #endif //ARKANOID_PLATFORM_H

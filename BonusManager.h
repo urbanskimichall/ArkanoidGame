@@ -30,7 +30,11 @@ public:
 private:
     void setUpDoubleBallBonusIcon();
 
+    void setUpShootingBonusIcon();
+
     void deactivationOfDoubleBall(Bonus bonus);
+
+    void deactivationOfShootingBonus(Bonus bonus);
 
     void activationOfDoubleBallBonus(const Bonus, std::vector<sf::RectangleShape> &rectangles);
 
@@ -39,6 +43,8 @@ private:
     int counterOfRemovedRectangles{0};
     sf::Sprite doubleBallSprite;
     sf::Texture doubleBallTexture;
+    sf::Sprite shootingSprite;
+    sf::Texture shootingTexture;
     std::map<Bonus, bool> bonuses;
     int counterOfElapsedTimeUntilBallBonusWasActivated{0};
     std::vector<Ball> balls;
