@@ -88,3 +88,8 @@ void Ball::setIsBonusDropped(bool changedBonusDroppedFlag)
 {
     isBonusDropped = changedBonusDroppedFlag;
 }
+
+void Ball::setBallSpeed(float speed)
+{
+    this->ballMovement.setBallSpeed(speed);
+}

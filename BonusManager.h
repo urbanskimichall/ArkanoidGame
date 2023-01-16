@@ -36,6 +36,10 @@ private:
 
     void setUpBiggerPlatformBonusIcon();
 
+    void setUpFasterBallBonusIcon();
+
+    void setUpSlowerBallBonusIcon();
+
     void deactivationOfDoubleBall(Bonus bonus);
 
     void deactivationOfBiggerPlatform(Bonus bonus);
@@ -43,6 +47,8 @@ private:
     void deactivationOfShooting(Bonus bonus);
 
     void deactivationOfSmallerPlatform(const Bonus bonus);
+
+    void deactivationOfFasterBall(const Bonus bonus);
 
     void activationOfDoubleBallBonus(const Bonus, std::vector<sf::RectangleShape> &rectangles);
 
@@ -57,10 +63,16 @@ private:
     sf::Sprite biggerPlatformSprite;
     sf::Texture smallerPlatformTexture;
     sf::Sprite smallerPlatformSprite;
+    sf::Texture fasterBallTexture;
+    sf::Sprite fasterBallSprite;
+    sf::Texture slowerBallTexture;
+    sf::Sprite slowerBallSprite;
     std::map<Bonus, bool> bonuses;
     int counterOfElapsedTimeUntilBallBonusWasActivated{0};
     std::vector<Ball> balls;
     int counterOfGeneratedBalls{0};
+
+    void deactivationOfSlowerBall(const Bonus bonus);
 };
 
 #endif //ARKANOID_BONUSMANAGER_H

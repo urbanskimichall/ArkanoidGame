@@ -264,3 +264,8 @@ bool BallMovement::checkIfRightSideBlockTouched(std::vector<sf::RectangleShape> 
             currentYposition < rectangles[indexOfRectangle].getPosition().y + rectangles[indexOfRectangle].getSize().y);
 }
 
+void BallMovement::setBallSpeed(float speed)
+{
+    this->speedMultiplicator = speed;
+}
+

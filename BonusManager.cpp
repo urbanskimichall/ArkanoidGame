@@ -17,6 +17,8 @@ BonusManager::BonusManager(Blocks &blocks)
     setUpShootingBonusIcon();
     setUpBiggerPlatformBonusIcon();
     setUpSmallerPlatformBonusIcon();
+    setUpFasterBallBonusIcon();
+    setUpSlowerBallBonusIcon();
 }
 
 void BonusManager::generateBonus(std::vector<sf::RectangleShape> &rectangles, Platform &platform)
@@ -28,11 +30,11 @@ void BonusManager::generateBonus(std::vector<sf::RectangleShape> &rectangles, Pl
             counterOfRemovedRectangles++;
             if (counterOfRemovedRectangles % 3 == 1)
             {
-                auto iter = bonuses.find(static_cast<Bonus>(1));
+                auto iter = bonuses.find(static_cast<Bonus>(6));
                 if (iter == bonuses.end())
                 {
-                    smallerPlatformSprite.setPosition(ball.getXYofBall().first, ball.getXYofBall().second);
-                    bonuses[static_cast<Bonus>(1)] = false;
+                    slowerBallSprite.setPosition(ball.getXYofBall().first, ball.getXYofBall().second);
+                    bonuses[static_cast<Bonus>(6)] = false;
                 }
             }
         }
@@ -41,19 +43,14 @@ void BonusManager::generateBonus(std::vector<sf::RectangleShape> &rectangles, Pl
     updateBonusIconPosition(platform, rectangles);
 }
 
-void BonusManager::setUpDoubleBallBonusIcon()
-{
-    doubleBallTexture.loadFromFile("../Pictures/DoubleBall.png");
-    doubleBallSprite.setTexture(doubleBallTexture);
-    doubleBallSprite.setPosition(-200, -200);
-}
-
 void BonusManager::drawBonus(sf::RenderWindow &window)
 {
     window.draw(doubleBallSprite);
     window.draw(shootingSprite);
     window.draw(biggerPlatformSprite);
     window.draw(smallerPlatformSprite);
+    window.draw(fasterBallSprite);
+    window.draw(slowerBallSprite);
 }
 
 void BonusManager::updateBonusIconPosition(Platform &platform, std::vector<sf::RectangleShape> &rectangles)
@@ -153,7 +150,58 @@ void BonusManager::updateBonusIconPosition(Platform &platform, std::vector<sf::R
             }
             break;
         }
+        case Bonus::FASTER_BALL:
+        {
+            float currentYBonusIconPosition = fasterBallSprite.getPosition().y;
+            float currentXBonusIconPosition = fasterBallSprite.getPosition().x;
+            currentYBonusIconPosition += 2.7;
+            fasterBallSprite.setPosition(currentXBonusIconPosition, currentYBonusIconPosition);
+            std::cout << counterOfElapsedTimeUntilBallBonusWasActivated << std::endl;
+            if (isBonusCaughtByPlatform(platform, currentXBonusIconPosition, currentYBonusIconPosition))
+            {
+                bonuses[bonus] = true;
+                for (int i = 0; i < balls.size(); i++)
+                {
+                    balls[i].setBallSpeed(75);
+                }
+            }
+            if (counterOfElapsedTimeUntilBallBonusWasActivated == 1200 && bonuses[bonus])
+            {
 
+                deactivationOfFasterBall(bonus);
+            }
+            else if (bonuses[bonus])
+            {
+                counterOfElapsedTimeUntilBallBonusWasActivated++;
+            }
+            break;
+        }
+        case Bonus::SLOWER_BALL:
+        {
+            float currentYBonusIconPosition = slowerBallSprite.getPosition().y;
+            float currentXBonusIconPosition = slowerBallSprite.getPosition().x;
+            currentYBonusIconPosition += 2.7;
+            slowerBallSprite.setPosition(currentXBonusIconPosition, currentYBonusIconPosition);
+            std::cout << counterOfElapsedTimeUntilBallBonusWasActivated << std::endl;
+            if (isBonusCaughtByPlatform(platform, currentXBonusIconPosition, currentYBonusIconPosition))
+            {
+                bonuses[bonus] = true;
+                for (int i = 0; i < balls.size(); i++)
+                {
+                    balls[i].setBallSpeed(25);
+                }
+            }
+            if (counterOfElapsedTimeUntilBallBonusWasActivated == 1200 && bonuses[bonus])
+            {
+
+                deactivationOfSlowerBall(bonus);
+            }
+            else if (bonuses[bonus])
+            {
+                counterOfElapsedTimeUntilBallBonusWasActivated++;
+            }
+        }
+            break;
         default:
             break;
         }
@@ -205,6 +253,30 @@ void BonusManager::deactivationOfSmallerPlatform(const Bonus bonus)
     counterOfElapsedTimeUntilBallBonusWasActivated = 0;
 }
 
+void BonusManager::deactivationOfFasterBall(const Bonus bonus)
+{
+    for (int i = 0; i < balls.size(); i++)
+    {
+        balls[i].setBallSpeed(50);
+    }
+    bonuses[bonus] = false;
+    bonuses.erase({Bonus::FASTER_BALL});
+    counterOfGeneratedBalls = 0;
+    counterOfElapsedTimeUntilBallBonusWasActivated = 0;
+}
+
+void BonusManager::deactivationOfSlowerBall(const Bonus bonus)
+{
+    for (int i = 0; i < balls.size(); i++)
+    {
+        balls[i].setBallSpeed(50);
+    }
+    bonuses[bonus] = false;
+    bonuses.erase({Bonus::SLOWER_BALL});
+    counterOfGeneratedBalls = 0;
+    counterOfElapsedTimeUntilBallBonusWasActivated = 0;
+}
+
 void BonusManager::activationOfDoubleBallBonus(const Bonus bonus, std::vector<sf::RectangleShape> &rectangles)
 {
     bonuses[bonus] = true;
@@ -221,6 +293,13 @@ bool BonusManager::isBonusCaughtByPlatform(Platform &platform, float xIconPositi
     return platform.getYOfPlatform() < yIconPosition &&
            platform.getXOfPlatform() < xIconPosition &&
            platform.getXOfPlatform() + platform.getSizeXOfPlatform() > xIconPosition;
+}
+
+void BonusManager::setUpDoubleBallBonusIcon()
+{
+    doubleBallTexture.loadFromFile("../Pictures/DoubleBall.png");
+    doubleBallSprite.setTexture(doubleBallTexture);
+    doubleBallSprite.setPosition(-200, -200);
 }
 
 void BonusManager::setUpShootingBonusIcon()
@@ -243,4 +322,22 @@ void BonusManager::setUpSmallerPlatformBonusIcon()
     smallerPlatformSprite.setTexture(smallerPlatformTexture);
     smallerPlatformSprite.setPosition(-200, -200);
 }
+
+void BonusManager::setUpFasterBallBonusIcon()
+{
+    fasterBallTexture.loadFromFile("../Pictures/FasterBall.png");
+    fasterBallSprite.setTexture(fasterBallTexture);
+    fasterBallSprite.setPosition(-200, -200);
+}
+
+void BonusManager::setUpSlowerBallBonusIcon()
+{
+    slowerBallTexture.loadFromFile("../Pictures/SlowerBall.png");
+    slowerBallSprite.setTexture(slowerBallTexture);
+    slowerBallSprite.setPosition(-200, -200);
+}
+
+
+
+
 

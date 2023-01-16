@@ -35,6 +35,8 @@ public:
 
     void setIsBonusDropped(bool b);
 
+    void setBallSpeed(float speed);
+
 private:
     sf::CircleShape ball;
     sf::Color colorOfBall{20, 40, 200};

@@ -22,6 +22,8 @@ public:
 
     void drawBonus(sf::RenderWindow &window);
 
+    void setBallSpeed(float speed);
+
 private:
     void checkCeilingTouch(float xOfBall, float yOfBall);
 
@@ -57,7 +59,7 @@ private:
     float radiusOfBall{0};
     const float numberOfSectors{20};
     int indexOfSector{0};
-    const float speedMultiplicator{50};
+    float speedMultiplicator{50};
     float ballBounceCoefficient{0.05f};
     std::vector<float> directionsOfBall{0.2, 0.17, 0.15, 0.12, 0.1, 0.07, 0.05, 0.03, 0.02, 0.01, 0.02, 0.03,
                                         0.05, 0.07, 0.1, 0.12, 0.15, 0.17, 0.19, 0.2};
