@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Platform.h"
 
 Platform::Platform(float xSizeOfWindow, float ySizeOfWindow)
@@ -34,17 +35,12 @@ void Platform::setPlatformPosition(int xMousePosition)
         sizeOfPlatform = {sizeXofPlatform * 2, sizeYofPlatform};
         platform.setSize(sizeOfPlatform);
     }
-    else
-    {
-        sizeOfPlatform = {sizeXofPlatform, sizeYofPlatform};
-        platform.setSize(sizeOfPlatform);
-    }
     if (isSmallerPlatformBonusActive)
     {
         sizeOfPlatform = {sizeXofPlatform / 2, sizeYofPlatform};
         platform.setSize(sizeOfPlatform);
     }
-    else
+    else if (!isSmallerPlatformBonusActive && !isBiggerPlatformBonusActive)
     {
         sizeOfPlatform = {sizeXofPlatform, sizeYofPlatform};
         platform.setSize(sizeOfPlatform);

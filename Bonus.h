@@ -10,7 +10,7 @@ enum class Bonus
     SHOOTING,
     FASTER_BALL,
     SLOWER_BALL,
-    FIRE_BALL
+
 };
 
 #endif //ARKANOID_BONUS_H
